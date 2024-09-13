@@ -12,11 +12,16 @@ body {
     text-align: center;
 }
 
+.dice-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
 .dice {
     width: 50px;
     height: 50px;
-    display: inline-block;
-    margin: 10px;
     background-color: #fff;
     border: 2px solid #000;
     border-radius: 10px;
@@ -25,16 +30,34 @@ body {
     text-align: center;
 }
 
-#dice1 { background-color: #ff9999; }
-#dice2 { background-color: #99ff99; }
-#dice3 { background-color: #9999ff; }
-#dice4 { background-color: #ffff99; }
-#dice5 { background-color: #ff99ff; }
-#dice6 { background-color: #99ffff; }
+#dice1 { background-color: #d9534f; } /* Qwixx Red */
+#dice2 { background-color: #ffff99; } /* Soft Yellow */
+#dice3 { background-color: #5b96de; } /* Qwixx Blue */
+#dice4 { background-color: #5cb85c; } /* Qwixx Green */
+#dice5 { background-color: #f2f2f2; } /* Qwixx Gray */
+#dice6 { background-color: #f2f2f2; } /* Qwixx Gray */
+
+.button-container {
+    margin-top: 20px;
+}
 
 button {
-    margin-top: 20px;
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
+}
+
+/* Responsive styles */
+@media (max-width: 600px) {
+    .dice {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+        line-height: 40px;
+    }
+    
+    button {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
 }
