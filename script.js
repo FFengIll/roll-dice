@@ -1,7 +1,25 @@
 function rollDice() {
-    for (let i = 1; i <= 6; i++) {
-        const dice = document.getElementById(`dice${i}`);
-        const result = Math.floor(Math.random() * 6) + 1;
-        dice.textContent = result;
+    // Function to simulate the shaking effect
+    function shakeDice() {
+        for (let i = 1; i <= 6; i++) {
+            const dice = document.getElementById(`dice${i}`);
+            dice.textContent = '';
+            dice.classList.add('shaking');
+        }
     }
+
+    // Function to stop the shaking effect and show the final result
+    function stopShake() {
+        setTimeout(() => {
+            for (let i = 1; i <= 6; i++) {
+                const dice = document.getElementById(`dice${i}`);
+                const result = Math.floor(Math.random() * 6) + 1;
+                dice.textContent = result;
+                dice.classList.remove('shaking');
+            }
+        }, 1000); // Duration of the shaking effect
+    }
+
+    shakeDice();
+    stopShake();
 }
