@@ -1,3 +1,5 @@
+let diceSize = 50; // Initial size in pixels
+
 function rollDice() {
     // Function to simulate the shaking effect
     function shakeDice() {
@@ -22,4 +24,15 @@ function rollDice() {
 
     shakeDice();
     stopShake();
+}
+
+function changeSize(amount) {
+    diceSize = Math.max(20, diceSize + amount); // Prevent size from going below 20px
+    const diceElements = document.querySelectorAll('.dice');
+    diceElements.forEach(dice => {
+        dice.style.width = `${diceSize}px`;
+        dice.style.height = `${diceSize}px`;
+        dice.style.lineHeight = `${diceSize}px`;
+        dice.style.fontSize = `${diceSize * 0.5}px`; // Adjust font size proportionally
+    });
 }
