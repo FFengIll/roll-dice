@@ -46,6 +46,17 @@ body {
     margin-bottom: 20px;
 }
 
+.extra-dice-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    max-width: 300px; /* 设置最大宽度，根据需要调整 */
+    margin: 0 auto; /* 居中对齐 */
+}
+
+
 .dice-container.small-screen {
     grid-template-columns: repeat(2, 50px); /* 2 columns for small screens */
 }
