@@ -10,9 +10,43 @@ const initialDiceConfig = {
     ],
 };
 
+const Dice = ({ id, value, size, style,isSelected,onClick }) => {
+    return (
+        <div
+            id={id}
+            className={`dice ${value === '' ? 'shaking' : 'dice'} ${isSelected ? 'selected' : ''}`}
+            style={{
+                width: size,
+                height: size,
+                fontSize: size * 0.5,
+                ...style
+            }}
+            onClick={onClick}
+        >
+            {value}
+        </div>
+    );
+};
+
+// Dice.propTypes = {
+//     id: PropTypes.string.isRequired,
+//     value: PropTypes.string.isRequired,
+//     size: PropTypes.number.isRequired,
+//     style: PropTypes.object
+// };
+
+// Dice.defaultProps = {
+//     style: {}
+// };
+
 const App = () => {
     const [diceConfig, setDiceConfig] = React.useState(initialDiceConfig);
     const [diceSize, setDiceSize] = React.useState(50);
+    const [selectedDiceId, setSelectedDiceId] = React.useState(null);
+
+    const handleDiceClick = (id) => {
+      setSelectedDiceId(id === selectedDiceId ? null : id); // Toggle selection
+    };
 
     const rollDice = () => {
         const shakeDice = () => {
@@ -40,6 +74,7 @@ const App = () => {
     };
 
     const changeSize = (amount) => {
+        console.log("size change", amount)
         setDiceSize(prevSize => Math.max(20, prevSize + amount));
     };
 
@@ -87,17 +122,29 @@ const App = () => {
                 {diceConfig.dice.slice(0, -1).map((row, rowIndex) => (
                     <div key={rowIndex} className="dice-container">
                         {row.map(dice => (
-                            <div key={dice.id} id={dice.id} className={`dice ${dice.value === '' ? 'shaking' : 'dice'}`}>
-                                {dice.value}
-                            </div>
+                            <Dice
+                                key={dice.id}
+                                id={dice.id}
+                                value={dice.value}
+                                size={diceSize}
+                                style={{ /* 你可以在这里传递额外的样式，如果需要的话 */ }}
+                                isSelected={dice.id === selectedDiceId}
+                                onClick={() => handleDiceClick(dice.id)}
+                            />
                         ))}
                     </div>
                 ))}
                 <div className="extra-dice-container">
                     {diceConfig.dice[diceConfig.dice.length - 1].map((dice, diceIndex) => (
-                        <div key={dice.id} id={dice.id} className={`dice ${dice.value === '' ? 'shaking' : 'dice'}`}>
-                            {dice.value}
-                        </div>
+                        <Dice
+                            key={dice.id}
+                            id={dice.id}
+                            value={dice.value}
+                            size={diceSize}
+                            style={{ /* 你可以在这里传递额外的样式，如果需要的话 */ }}
+                            isSelected={dice.id === selectedDiceId}
+                            onClick={() => handleDiceClick(dice.id)}
+                        />
                     ))}
                 </div>
             </div>
