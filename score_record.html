@@ -7,7 +7,7 @@
         name="viewport"
         content="width=device-width, initial-scale=1.0"
     >
-    <title>Static React App with Material-UI</title>
+    <title>Score Record</title>
 
     <!-- Include Material-UI CSS -->
     <link
@@ -46,7 +46,7 @@
 
     <script type="text/babel">
         const { useState, useEffect } = React;
-        const { TextField, Button, Typography, List, ListItem, ListItemText, Grid, Item } = MaterialUI;
+        const { Container, TextField, Button, Typography, List, ListItem, ListItemText, Grid } = MaterialUI;
 
         const App = () => {
             const [items, setItems] = useState(() => {
@@ -55,6 +55,7 @@
             });
             const [inputValue, setInputValue] = useState('');
             const [prevItems, setPrevItems] = useState([]);
+            const [spacing, setSpacing] = useState(5); // 控制间距
 
             useEffect(() => {
                 localStorage.setItem('items', JSON.stringify(items));
@@ -80,46 +81,51 @@
                 setPrevItems([]);
             };
 
+            const handleKeyPress = (event) => {
+                if (event.key === 'Enter') {
+                    addItem();
+                }
+            };
+
             const sumItems = items.reduce((acc, item) => acc + item, 0);
 
             return (
-                <Grid spacing={5}>
-                    <Grid size={12}>
-                        <Typography variant="h4" gutterBottom>Score Record</Typography>
+                <Container sx={{ marginTop: 2 }}>
+                    <Grid container spacing={spacing}>
+                        <Grid item xs={12}>
+                            <Typography variant="h4" gutterBottom>Score Record</Typography>
+                            <Typography variant="h5">Total: {sumItems}</Typography>
+                        </Grid>
 
-                        <Typography variant="h5">Total: {sumItems}</Typography>
+                        <Grid item xs={12}>
+                            <Button variant="contained" color="primary" onClick={addItem}>Add Score</Button>
+                            <Button variant="outlined" color="secondary" onClick={resetItems} style={{ marginLeft: '10px' }}>Reset</Button>
+                            <Button variant="outlined" onClick={restoreItems} disabled={prevItems.length === 0} style={{ marginLeft: '10px' }}>Restore</Button>
+                        </Grid>
+
+                        <Grid item xs={12}>
+                            <TextField
+                                type="number"
+                                value={inputValue}
+                                onChange={(e) => setInputValue(e.target.value)}
+                                onKeyPress={handleKeyPress} // 绑定回车事件
+                                label="Enter a score"
+                                variant="outlined"
+                                style={{ marginTop: '20px', marginRight: '10px' }}
+                            />
+                        </Grid>
+
+                        <Grid item xs={12}>
+                            <List style={{ marginTop: '20px', width: '300px', maxWidth: '100%' }}>
+                                {items.map((item, index) => (
+                                    <ListItem key={index}>
+                                        <ListItemText primary={item} />
+                                    </ListItem>
+                                ))}
+                            </List>
+                        </Grid>
                     </Grid>
-
-
-                    <Grid size={12}>
-
-                        <Button variant="contained" color="primary" onClick={addItem}>Add Score</Button>
-                        <Button variant="outlined" color="secondary" onClick={resetItems} style={{ marginLeft: '10px' }}>Reset</Button>
-                        <Button variant="outlined" onClick={restoreItems} disabled={prevItems.length === 0} style={{ marginLeft: '10px' }}>Restore</Button>
-                    </Grid>
-
-                    <Grid size={12}>
-                        <TextField
-                            type="number"
-                            value={inputValue}
-                            onChange={(e) => setInputValue(e.target.value)}
-                            label="Enter a score"
-                            variant="outlined"
-                            style={{ marginTop: '20px', marginRight: '10px' }}
-                        />
-                    </Grid>
-                    <Grid size={12}>
-
-                        <List style={{ marginTop: '20px', width: '300px', maxWidth: '100%' }}>
-                            {items.map((item, index) => (
-                                <ListItem key={index}>
-                                    <ListItemText primary={item} />
-                                </ListItem>
-                            ))}
-                        </List>
-                    </Grid>
-
-                </Grid>
+                </Container>
             );
         };
 
