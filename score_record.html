@@ -16,8 +16,9 @@
     />
     <link
         rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/material-ui/5.4.1/material-ui.min.css"
+        href="https://unpkg.com/@mui/material@5.4.1/styles.css"
     />
+
 
     <!-- Include React and ReactDOM via CDN -->
     <script
@@ -98,13 +99,13 @@
                         </Grid>
 
                         <Grid item xs={12}>
-                    
+
                             <Button variant="outlined" color="secondary" onClick={resetItems} style={{ marginRight: '10px' }}>Reset</Button>
                             <Button variant="outlined" onClick={restoreItems} disabled={prevItems.length === 0} style={{ marginRight: '10px' }}>Restore</Button>
                         </Grid>
 
                         <Grid item xs={12}>
-                
+
                             <TextField
                                 type="number"
                                 value={inputValue}
@@ -112,7 +113,7 @@
                                 onKeyPress={handleKeyPress} // 绑定回车事件
                                 label="Enter a score"
                                 variant="outlined"
-                            
+
                                 InputProps={{
                                     endAdornment: (
                                         <InputAdornment position="end">
