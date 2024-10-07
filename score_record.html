@@ -47,7 +47,7 @@
 
     <script type="text/babel">
         const { useState, useEffect } = React;
-        const { Container, TextField, Button, Typography, List, ListItem, ListItemText, Grid, InputAdornment } = MaterialUI;
+        const { Container, TextField, Button, Typography, List, ListItem, ListItemText, Grid, InputAdornment, ListItemIcon } = MaterialUI;
 
         const App = () => {
             const [items, setItems] = useState(() => {
@@ -128,11 +128,18 @@
 
                         <Grid item xs={12}>
                             <List>
-                                {items.map((item, index) => (
-                                    <ListItem key={index}>
-                                        <ListItemText primary={item} />
-                                    </ListItem>
-                                ))}
+                                {items.slice().map((item, index) => {
+                                    const displayIndex = index; // 计算倒序索引
+
+                                    return (
+                                        <ListItem key={index}>
+                                            <ListItemIcon>
+                                                <Typography variant="body1">{`${displayIndex})`}</Typography>
+                                            </ListItemIcon>
+                                            <ListItemText color="primary" primary={`${item}`} />
+                                        </ListItem>
+                                    );
+                                }).reverse()}
                             </List>
                         </Grid>
                     </Grid>
