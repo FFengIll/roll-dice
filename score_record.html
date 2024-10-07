@@ -46,7 +46,7 @@
 
     <script type="text/babel">
         const { useState, useEffect } = React;
-        const { Container, TextField, Button, Typography, List, ListItem, ListItemText, Grid } = MaterialUI;
+        const { Container, TextField, Button, Typography, List, ListItem, ListItemText, Grid, InputAdornment } = MaterialUI;
 
         const App = () => {
             const [items, setItems] = useState(() => {
@@ -98,12 +98,13 @@
                         </Grid>
 
                         <Grid item xs={12}>
-                            <Button variant="contained" color="primary" onClick={addItem}>Add Score</Button>
-                            <Button variant="outlined" color="secondary" onClick={resetItems} style={{ marginLeft: '10px' }}>Reset</Button>
-                            <Button variant="outlined" onClick={restoreItems} disabled={prevItems.length === 0} style={{ marginLeft: '10px' }}>Restore</Button>
+                    
+                            <Button variant="outlined" color="secondary" onClick={resetItems} style={{ marginRight: '10px' }}>Reset</Button>
+                            <Button variant="outlined" onClick={restoreItems} disabled={prevItems.length === 0} style={{ marginRight: '10px' }}>Restore</Button>
                         </Grid>
 
                         <Grid item xs={12}>
+                
                             <TextField
                                 type="number"
                                 value={inputValue}
@@ -111,7 +112,16 @@
                                 onKeyPress={handleKeyPress} // 绑定回车事件
                                 label="Enter a score"
                                 variant="outlined"
-                                style={{ marginTop: '20px', marginRight: '10px' }}
+                            
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <Button variant="contained" color="primary" onClick={addItem}>
+                                                Add
+                                            </Button>
+                                        </InputAdornment>
+                                    ),
+                                }}
                             />
                         </Grid>
 
