@@ -14,25 +14,25 @@
         rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
     />
-    <link
+    <!-- <link
         rel="stylesheet"
         href="https://unpkg.com/@mui/material@5.4.1/styles.css"
-    />
+    /> -->
 
 
     <!-- Include React and ReactDOM via CDN -->
     <script
-        src="https://unpkg.com/react@18/umd/react.development.js"
+        src="https://unpkg.com/react@18/umd/react.production.min.js"
         crossorigin
     ></script>
     <script
-        src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+        src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
         crossorigin
     ></script>
     <!-- Include Babel for JSX support -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <!-- Include Material-UI JavaScript -->
-    <script src="https://unpkg.com/@mui/material@5.4.1/umd/material-ui.development.js"></script>
+    <script src="https://unpkg.com/@mui/material@5.4.1/umd/material-ui.production.min.js"></script>
 
     <style>
         body {
@@ -71,13 +71,13 @@
                 }
             };
 
-            const resetItems = () => {
+            const clearItems = () => {
                 setPrevItems(items); // Store current items for restoration
                 setItems([]);
                 setInputValue('');
             };
 
-            const restoreItems = () => {
+            const revokeItems = () => {
                 setItems(prevItems);
                 setPrevItems([]);
             };
@@ -100,8 +100,8 @@
 
                         <Grid item xs={12}>
 
-                            <Button variant="outlined" color="secondary" onClick={resetItems} style={{ marginRight: '10px' }}>Reset</Button>
-                            <Button variant="outlined" onClick={restoreItems} disabled={prevItems.length === 0} style={{ marginRight: '10px' }}>Restore</Button>
+                            <Button variant="outlined" color="secondary" onClick={clearItems} style={{ marginRight: '10px' }}>Clear</Button>
+                            <Button variant="outlined" onClick={revokeItems} disabled={prevItems.length === 0} style={{ marginRight: '10px' }}>Revoke</Button>
                         </Grid>
 
                         <Grid item xs={12}>
@@ -127,7 +127,7 @@
                         </Grid>
 
                         <Grid item xs={12}>
-                            <List style={{ marginTop: '20px', width: '300px', maxWidth: '100%' }}>
+                            <List>
                                 {items.map((item, index) => (
                                     <ListItem key={index}>
                                         <ListItemText primary={item} />
