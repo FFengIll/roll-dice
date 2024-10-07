@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+    <title>Static React App with Material-UI</title>
+
+    <!-- Include Material-UI CSS -->
+    <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+    />
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/material-ui/5.4.1/material-ui.min.css"
+    />
+
+    <!-- Include React and ReactDOM via CDN -->
+    <script
+        src="https://unpkg.com/react@18/umd/react.development.js"
+        crossorigin
+    ></script>
+    <script
+        src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+        crossorigin
+    ></script>
+    <!-- Include Babel for JSX support -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Include Material-UI JavaScript -->
+    <script src="https://unpkg.com/@mui/material@5.4.1/umd/material-ui.development.js"></script>
+
+    <style>
+        body {
+            padding: 20px;
+            font-family: 'Roboto', sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { TextField, Button, Typography, List, ListItem, ListItemText, Grid, Item } = MaterialUI;
+
+        const App = () => {
+            const [items, setItems] = useState(() => {
+                const savedItems = localStorage.getItem('items');
+                return savedItems ? JSON.parse(savedItems) : [];
+            });
+            const [inputValue, setInputValue] = useState('');
+            const [prevItems, setPrevItems] = useState([]);
+
+            useEffect(() => {
+                localStorage.setItem('items', JSON.stringify(items));
+            }, [items]);
+
+            const addItem = () => {
+                const number = parseFloat(inputValue);
+                if (!isNaN(number)) {
+                    setPrevItems(items); // Store previous items before adding
+                    setItems([...items, number]);
+                    setInputValue('');
+                }
+            };
+
+            const resetItems = () => {
+                setPrevItems(items); // Store current items for restoration
+                setItems([]);
+                setInputValue('');
+            };
+
+            const restoreItems = () => {
+                setItems(prevItems);
+                setPrevItems([]);
+            };
+
+            const sumItems = items.reduce((acc, item) => acc + item, 0);
+
+            return (
+                <Grid spacing={5}>
+                    <Grid size={12}>
+                        <Typography variant="h4" gutterBottom>Score Record</Typography>
+
+                        <Typography variant="h5">Total: {sumItems}</Typography>
+                    </Grid>
+
+
+                    <Grid size={12}>
+
+                        <Button variant="contained" color="primary" onClick={addItem}>Add Score</Button>
+                        <Button variant="outlined" color="secondary" onClick={resetItems} style={{ marginLeft: '10px' }}>Reset</Button>
+                        <Button variant="outlined" onClick={restoreItems} disabled={prevItems.length === 0} style={{ marginLeft: '10px' }}>Restore</Button>
+                    </Grid>
+
+                    <Grid size={12}>
+                        <TextField
+                            type="number"
+                            value={inputValue}
+                            onChange={(e) => setInputValue(e.target.value)}
+                            label="Enter a score"
+                            variant="outlined"
+                            style={{ marginTop: '20px', marginRight: '10px' }}
+                        />
+                    </Grid>
+                    <Grid size={12}>
+
+                        <List style={{ marginTop: '20px', width: '300px', maxWidth: '100%' }}>
+                            {items.map((item, index) => (
+                                <ListItem key={index}>
+                                    <ListItemText primary={item} />
+                                </ListItem>
+                            ))}
+                        </List>
+                    </Grid>
+
+                </Grid>
+            );
+        };
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+
+</html>
