@@ -1,16 +1,20 @@
 const initialDiceConfig = {
     dice: [
-        [{ id: 'dice1', value: 1 },
-        { id: 'dice2', value: 2 },
-        { id: 'dice3', value: 3 },
-        { id: 'dice4', value: 4 }],
-        [{ id: 'dice5', value: 5 },
-        { id: 'dice6', value: 6 }],
+        [
+            {id: 'dice1', value: 1},
+            {id: 'dice2', value: 2},
+            {id: 'dice3', value: 3},
+            {id: 'dice4', value: 4}
+        ],
+        [
+            {id: 'dice5', value: 5},
+            {id: 'dice6', value: 6}
+        ],
         [],
     ],
 };
 
-const Dice = ({ id, value, size, style,isSelected,onClick }) => {
+const Dice = ({id, value, size, style, isSelected, onClick}) => {
     return (
         <div
             id={id}
@@ -39,13 +43,13 @@ const Dice = ({ id, value, size, style,isSelected,onClick }) => {
 //     style: {}
 // };
 
-const App = () => {
+const DiceRoll = () => {
     const [diceConfig, setDiceConfig] = React.useState(initialDiceConfig);
     const [diceSize, setDiceSize] = React.useState(50);
     const [selectedDiceId, setSelectedDiceId] = React.useState(null);
 
     const handleDiceClick = (id) => {
-      setSelectedDiceId(id === selectedDiceId ? null : id); // Toggle selection
+        setSelectedDiceId(id === selectedDiceId ? null : id); // Toggle selection
     };
 
     const rollDice = () => {
@@ -81,7 +85,7 @@ const App = () => {
     const addDice = () => {
         setDiceConfig(prevConfig => {
             const newId = `dice${prevConfig.dice.flat().length + 1}`;
-            const newDice = { id: newId, value: 1 };
+            const newDice = {id: newId, value: 1};
 
             // Add the new dice to the last group
             const newDiceConfig = prevConfig.dice.slice(0, -1);
@@ -113,8 +117,10 @@ const App = () => {
     return (
         <div className="container">
             <div className="controls">
-                <button className="control-btn" onClick={() => changeSize(-10)}><i className="fas fa-search-minus"></i></button>
-                <button className="control-btn" onClick={() => changeSize(10)}><i className="fas fa-search-plus"></i></button>
+                <button className="control-btn" onClick={() => changeSize(-10)}><i className="fas fa-search-minus"></i>
+                </button>
+                <button className="control-btn" onClick={() => changeSize(10)}><i className="fas fa-search-plus"></i>
+                </button>
                 <button className="modifier-btn" onClick={addDice}>+ Dice</button>
                 <button className="modifier-btn" onClick={removeDice}>- Dice</button>
             </div>
@@ -127,7 +133,7 @@ const App = () => {
                                 id={dice.id}
                                 value={dice.value}
                                 size={diceSize}
-                                style={{ /* 你可以在这里传递额外的样式，如果需要的话 */ }}
+                                style={{ /* 你可以在这里传递额外的样式，如果需要的话 */}}
                                 isSelected={dice.id === selectedDiceId}
                                 onClick={() => handleDiceClick(dice.id)}
                             />
@@ -141,7 +147,7 @@ const App = () => {
                             id={dice.id}
                             value={dice.value}
                             size={diceSize}
-                            style={{ /* 你可以在这里传递额外的样式，如果需要的话 */ }}
+                            style={{ /* 你可以在这里传递额外的样式，如果需要的话 */}}
                             isSelected={dice.id === selectedDiceId}
                             onClick={() => handleDiceClick(dice.id)}
                         />
@@ -157,4 +163,4 @@ const App = () => {
 
 // 渲染React组件到DOM
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<App />);
+root.render(<DiceRoll/>);

@@ -64,16 +64,19 @@ function changeSize(amount) {
 function diceForQWIXX() {
     return {
         "dice": [
-            [{ "id": "dice1", "value": 1 },
-            { "id": "dice2", "value": 2 },
-            { "id": "dice3", "value": 3 },
-            { "id": "dice4", "value": 4 },],
-            [{ "id": "dice5", "value": 5 },
-            { "id": "dice6", "value": 6 }]
+            [
+                {"id": "dice1", "value": 1},
+                {"id": "dice2", "value": 2},
+                {"id": "dice3", "value": 3},
+                {"id": "dice4", "value": 4},
+            ],
+            [
+                {"id": "dice5", "value": 5},
+                {"id": "dice6", "value": 6}
+            ]
         ]
     }
 }
-
 
 function addDice() {
     const diceContainer = document.getElementById('dice-container');
