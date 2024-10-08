@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+    <title>React MUI Grid</title>
+    <!-- Include React and ReactDOM -->
+    <script
+        src="https://unpkg.com/react/umd/react.development.js"
+        crossorigin
+    ></script>
+    <script
+        src="https://unpkg.com/react-dom/umd/react-dom.development.js"
+        crossorigin
+    ></script>
+    <!-- Include Babel for JSX transformation -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Include MUI -->
+    <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+    />
+    <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+    <!-- Include Material-UI JavaScript -->
+    <script
+        src="https://unpkg.com/@mui/material@5.4.1/umd/material-ui.production.min.js"
+        crossorigin
+    ></script>
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        .card-content {
+            display: flex;
+            align-items: center;
+            width: 200px;
+            /* Adjust height as needed */
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const { Grid, Card, CardContent, Typography } = MaterialUI;
+
+        const choices = new Map([
+            ['Dice', '/dice/index.html'],
+            ['Score', '/score/index.html'],
+        ]);
+
+        function ChoiceGrid() {
+            return (
+                <Grid container spacing={2}>
+                    {Array.from(choices.entries()).map(([name, url]) => (
+                        <Grid item xs={12} sm={6} md={4} lg={3} key={name}>
+                            <Card onClick={() => window.location.href = url} style={{ cursor: 'pointer' }}>
+                                <CardContent className="card-content">
+                                    <Typography variant="h6" component="div">
+                                        {name}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                    ))}
+                </Grid>
+            );
+        }
+
+        function App() {
+            return (
+                <div style={{ padding: 20 }}>
+                    <ChoiceGrid />
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+
+</html>
