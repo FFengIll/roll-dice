@@ -21,16 +21,6 @@ body {
     margin: 10px;
 }
 
-.dice-container,
-.extra-dice-container {
-    display: flex;
-    margin: 10px;
-    border: 1px solid #ccc;
-    padding: 10px;
-    min-height: 100px;
-    min-width: 100px;
-}
-
 .dice {
     display: flex;
     justify-content: center;
@@ -77,15 +67,27 @@ body {
 }
 
 .dice-container {
+    /* 设置为定宽 */
     display: flex;
+    /* 如果想要水平排列骰子，可以使用 flexbox */
     flex-wrap: wrap;
+    flex-direction: row;
+    /* 设置排列方向 */
+    align-items: center;
+    /* 垂直居中对齐 */
     justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
+    /* 水平居中对齐 */
+    margin: 10px;
+    /* 可以调整外边距 */
+
+    border: 1px solid #ccc;
+    padding: 10px;
+    min-height: 100px;
+    min-width: 300px;
 }
 
 .extra-dice-container {
-    display: flex;
+    /* display: flex; */
     flex-wrap: wrap;
     justify-content: center;
     gap: 10px;
@@ -98,8 +100,8 @@ body {
 
 
 .dice-container.small-screen {
-    grid-template-columns: repeat(2, 50px);
-    /* 2 columns for small screens */
+    grid-template-columns: repeat(4, 50px);
+    /* columns for small screens */
 }
 
 .dice {
