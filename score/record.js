@@ -42,9 +42,11 @@ const ScoreRecord = () => {
 
     const sumItems = items.reduce((acc, item) => acc + item, 0);
 
+    const uniqueSortedItems = [...new Set(items)].sort((a, b) => a - b);
+
     return (
         <Container sx={{ marginTop: 2 }}>
-            <Grid container spacing={spacing}>
+            <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <Typography variant="h4" gutterBottom>Score Record</Typography>
                     <Typography variant="h5">Total: {sumItems}</Typography>
@@ -52,43 +54,75 @@ const ScoreRecord = () => {
 
                 <Grid item xs={12}>
 
-                    <Button variant="outlined" color="secondary" onClick={clearItems} style={{ marginRight: '10px' }}>Clear</Button>
-                    <Button variant="outlined" onClick={revokeItems} disabled={prevItems.length === 0} style={{ marginRight: '10px' }}>Revoke</Button>
                 </Grid>
 
                 <Grid item xs={12}>
-
-                    <TextField
-                        type="number"
-                        value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value)}
-                        onKeyPress={handleKeyPress} // 绑定回车事件
-                        label="Enter a score"
-                        variant="outlined"
-
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    <Button variant="contained" color="primary" onClick={addItem}>
-                                        Add
-                                    </Button>
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
+                    <Grid container spacing={1}>
+                        <Grid item
+                            display="flex"
+                            justifyContent="center"
+                            alignItems="center"
+                        >
+                            <Typography variant="h5" gutterBottom>
+                                {/* Quick:  */}
+                            </Typography>
+                        </Grid>
+                        {uniqueSortedItems.map((item, index) => (
+                            <Grid item key={index}>
+                                <Button variant="outlined" onClick={() => setInputValue(item)}>
+                                    {item}
+                                </Button>
+                            </Grid>
+                        ))}
+                    </Grid>
                 </Grid>
+
+                <Grid item xs={12}
+
+                >
+                    <Grid container spacing={1}
+                        alignItems="center"
+                    >
+                        <Grid item>
+                            <TextField
+                                type="number"
+                                value={inputValue}
+                                onChange={(e) => setInputValue(e.target.value)}
+                                onKeyPress={handleKeyPress}
+                                label="Enter a score"
+                                variant="outlined"
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <Button variant="contained" color="primary" onClick={addItem}>
+                                                Add
+                                            </Button>
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                        </Grid>
+
+                        <Grid item>
+                            <Button variant="outlined" color="secondary" onClick={clearItems} style={{ marginRight: '10px' }}>Clear</Button>
+                            <Button variant="outlined" onClick={revokeItems} disabled={prevItems.length === 0} style={{ marginRight: '10px' }}>Revoke</Button>
+                        </Grid>
+                    </Grid>
+                </Grid>
+
+
 
                 <Grid item xs={12}>
                     <List>
                         {items.slice().map((item, index) => {
-                            const displayIndex = index + 1; // 计算倒序索引
+                            const displayIndex = index + 1;
 
                             return (
                                 <ListItem key={index}>
                                     <ListItemIcon>
                                         <Typography variant="body1">{`${displayIndex})`}</Typography>
                                     </ListItemIcon>
-                                    <ListItemText color="primary" primary={`${item}`} />
+                                    <ListItemText primary={`${item}`} />
                                 </ListItem>
                             );
                         }).reverse()}
