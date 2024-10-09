@@ -7,10 +7,10 @@
         name="viewport"
         content="width=device-width, initial-scale=1.0"
     >
-    <title>Dice Roller</title>
+    <title>Roll Dice</title>
     <link
         rel="stylesheet"
-        href="../styles.css"
+        href="styles.css"
     >
     <link
         rel="stylesheet"
@@ -29,42 +29,47 @@
     <!-- 引入Babel编译器 -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
+    <style>
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
+        .controls,
+        .button-container {
+            margin: 10px;
+        }
+
+        .dice-container,
+        .extra-dice-container {
+            display: flex;
+            margin: 10px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            min-height: 100px;
+            min-width: 100px;
+        }
+
+        .dice {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #000;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        .selected {
+            border-color: red;
+        }
+    </style>
 </head>
 
 <body>
     <div id="root"></div>
 
-    <div
-        class="container"
-        hidden
-    >
-        <div class="controls">
-            <button
-                class="control-btn"
-                onclick="changeSize(-10)"
-            ><i class="fas fa-search-minus"></i></button>
-            <button
-                class="control-btn"
-                onclick="changeSize(10)"
-            ><i class="fas fa-search-plus"></i></button>
-            <button
-                disabled
-                class="modifier-btn"
-                onclick="addDice()"
-            >+ Dice</button>
-            <button
-                disabled
-                class="modifier-btn"
-                onclick="removeDice()"
-            >- Dice</button>
 
-        </div>
-        <div id="dice-container"></div>
-        <div class="button-container">
-            <button onclick="rollDice()">ROLL</button>
-        </div>
-    </div>
     <script
         src="roll.js"
         type="text/babel"
