@@ -129,12 +129,12 @@ const DiceRoll = () => {
     };
 
     return (
-        <div className="container">            
+        <div className="container">
             <div className="controls">
                 <button className="control-btn" onClick={() => changeSize(-10)}><i className="fas fa-search-minus"></i></button>
                 <button className="control-btn" onClick={() => changeSize(10)}><i className="fas fa-search-plus"></i></button>
-                <button className="modifier-btn" onClick={addDice}>+ Dice</button>
-                <button className="modifier-btn" onClick={removeDice}>- Dice</button>
+                <button className="control-btn" onClick={addDice} ><i className="fa-solid fa-plus" /></button>
+                <button className="control-btn" onClick={removeDice}><i className="fa-solid fa-minus" /></button>
             </div>
             <div id="dice-container">
                 {diceConfig.dice.map((row, rowIndex) => (
