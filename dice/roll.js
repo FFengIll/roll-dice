@@ -1,3 +1,5 @@
+const { DragDropContext, Droppable, Draggable } = window.ReactBeautifulDnd;
+
 const initialDiceConfig = {
     dice: [
         [
@@ -14,7 +16,7 @@ const initialDiceConfig = {
     ],
 };
 
-const Dice = ({ id, value, size, style, isSelected, onClick, onDragStart, onDragOver, onDrop }) => {
+const Dice = ({ id, value = '', size = 50, style = {}, isSelected = false, onClick }) => {
     return (
         <div
             id={id}
@@ -26,21 +28,17 @@ const Dice = ({ id, value, size, style, isSelected, onClick, onDragStart, onDrag
                 ...style
             }}
             onClick={onClick}
-            draggable
-            onDragStart={onDragStart}
-            onDragOver={onDragOver}
-            onDrop={onDrop}
         >
             {value}
         </div>
     );
 };
 
+
 const DiceRoll = () => {
     const [diceConfig, setDiceConfig] = React.useState(initialDiceConfig);
     const [diceSize, setDiceSize] = React.useState(50);
     const [selectedDiceId, setSelectedDiceId] = React.useState(null);
-    const [draggedDice, setDraggedDice] = React.useState(null);
 
     const handleDiceClick = (id) => {
         setSelectedDiceId(id === selectedDiceId ? null : id); // Toggle selection
@@ -107,25 +105,26 @@ const DiceRoll = () => {
         });
     };
 
-    const handleDragStart = (e, dice) => {
-        setDraggedDice(dice);
-    };
+    const onDragEnd = (result) => {
+        const { source, destination } = result;
 
-    const handleDrop = (e, targetRowIndex) => {
-        e.preventDefault();
-        if (!draggedDice) return;
+        // If there's no destination (dragged outside droppable), do nothing
+        if (!destination) return;
+
+        // Don't do anything if the item is dropped in the same location
+        if (source.droppableId === destination.droppableId && source.index === destination.index) return;
 
         setDiceConfig(prevConfig => {
-            const newDiceConfig = prevConfig.dice.map(row => row.filter(dice => dice.id !== draggedDice.id));
-            newDiceConfig[targetRowIndex].push(draggedDice);
+            const newDiceConfig = [...prevConfig.dice];
+
+            // Get the dragged dice
+            const [movedDice] = newDiceConfig[source.droppableId].splice(source.index, 1);
+
+            // Insert it at the destination
+            newDiceConfig[destination.droppableId].splice(destination.index, 0, movedDice);
+
             return { dice: newDiceConfig };
         });
-
-        setDraggedDice(null);
-    };
-
-    const handleDragOver = (e) => {
-        e.preventDefault();
     };
 
     return (
@@ -136,24 +135,43 @@ const DiceRoll = () => {
                 <button className="control-btn" onClick={addDice} ><i className="fa-solid fa-plus" /></button>
                 <button className="control-btn" onClick={removeDice}><i className="fa-solid fa-minus" /></button>
             </div>
-            <div id="dice-container">
-                {diceConfig.dice.map((row, rowIndex) => (
-                    <div key={rowIndex} className="dice-container" onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, rowIndex)}>
-                        {row.map(dice => (
-                            <Dice
-                                key={dice.id}
-                                id={dice.id}
-                                value={dice.value}
-                                size={diceSize}
-                                style={{ /* 你可以在这里传递额外的样式，如果需要的话 */ }}
-                                isSelected={dice.id === selectedDiceId}
-                                onClick={() => handleDiceClick(dice.id)}
-                                onDragStart={(e) => handleDragStart(e, dice)}
-                            />
-                        ))}
-                    </div>
-                ))}
-            </div>
+            <DragDropContext onDragEnd={onDragEnd}>
+                <div id="dice-container">
+                    {diceConfig.dice.map((row, rowIndex) => (
+                        <Droppable key={rowIndex} droppableId={`${rowIndex}`}>
+                            {(provided) => (
+                                <div
+                                    ref={provided.innerRef}
+                                    {...provided.droppableProps}
+                                    className="dice-container"
+                                >
+                                    {row.map((dice, index) => (
+                                        <Draggable key={dice.id} draggableId={dice.id} index={index}>
+                                            {(provided) => (
+                                                <div
+                                                    ref={provided.innerRef}
+                                                    {...provided.draggableProps}
+                                                    {...provided.dragHandleProps}
+                                                >
+                                                    <Dice
+                                                        id={dice.id}
+                                                        value={dice.value}
+                                                        size={diceSize}
+                                                        style={{}}
+                                                        isSelected={dice.id === selectedDiceId}
+                                                        onClick={() => handleDiceClick(dice.id)}
+                                                    />
+                                                </div>
+                                            )}
+                                        </Draggable>
+                                    ))}
+                                    {provided.placeholder}
+                                </div>
+                            )}
+                        </Droppable>
+                    ))}
+                </div>
+            </DragDropContext>
             <div className="button-container">
                 <button onClick={rollDice}>ROLL</button>
             </div>
