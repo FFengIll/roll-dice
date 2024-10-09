@@ -6,35 +6,73 @@ body {
     margin: 0;
     background-color: #f0f0f0;
     font-family: Arial, sans-serif;
-    position: relative; /* Ensure positioning context for controls */
+    position: relative;
+    /* Ensure positioning context for controls */
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.controls,
+.button-container {
+    margin: 10px;
+}
+
+.dice-container,
+.extra-dice-container {
+    display: flex;
+    margin: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    min-height: 100px;
+    min-width: 100px;
+}
+
+.dice {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #000;
+    margin: 6px;
+    cursor: pointer;
+}
+
+.selected {
+    border-color: red;
 }
 
 .container {
     text-align: center;
-    position: relative; /* Position controls relative to the container */
+    position: relative;
+    /* Position controls relative to the container */
 }
 
 .controls {
-    position: fixed; /* Fixed positioning to keep it in the top-right corner */
+    position: fixed;
+    /* Fixed positioning to keep it in the top-right corner */
     top: 10px;
     right: 10px;
     display: flex;
     flex-direction: column;
-    gap: 5px;
-    z-index: 1000; /* Ensure controls are above other content */
+    gap: 6px;
+    z-index: 1000;
+    /* Ensure controls are above other content */
 }
 
 .control-btn {
-    padding: 5px 10px;
+    padding: 6px 6px;
     font-size: 18px;
     cursor: pointer;
 }
 
 /* Responsive styles for controls */
-@media (max-width: 600px) {
+@media (max-width: 400px) {
     .control-btn {
         font-size: 16px;
-        padding: 8px 12px;
+        padding: 6px 6px;
     }
 }
 
@@ -52,13 +90,16 @@ body {
     justify-content: center;
     gap: 10px;
     margin-bottom: 20px;
-    max-width: 300px; /* 设置最大宽度，根据需要调整 */
-    margin: 0 auto; /* 居中对齐 */
+    max-width: 300px;
+    /* 设置最大宽度，根据需要调整 */
+    margin: 0 auto;
+    /* 居中对齐 */
 }
 
 
 .dice-container.small-screen {
-    grid-template-columns: repeat(2, 50px); /* 2 columns for small screens */
+    grid-template-columns: repeat(2, 50px);
+    /* 2 columns for small screens */
 }
 
 .dice {
@@ -71,15 +112,40 @@ body {
     line-height: 50px;
     text-align: center;
     display: grid;
-    place-items: center; /* 水平和垂直居中 */
+    place-items: center;
+    /* 水平和垂直居中 */
 }
 
-#dice1 { background-color: #d9534f; } /* Qwixx Red */
-#dice2 { background-color: #ffff99; } /* Soft Yellow */
-#dice3 { background-color: #5b96de; } /* Qwixx Blue */
-#dice4 { background-color: #5cb85c; } /* Qwixx Green */
-#dice5 { background-color: #f2f2f2; } /* Qwixx Gray */
-#dice6 { background-color: #f2f2f2; } /* Qwixx Gray */
+#dice1 {
+    background-color: #d9534f;
+}
+
+/* Qwixx Red */
+#dice2 {
+    background-color: #ffff99;
+}
+
+/* Soft Yellow */
+#dice3 {
+    background-color: #5b96de;
+}
+
+/* Qwixx Blue */
+#dice4 {
+    background-color: #5cb85c;
+}
+
+/* Qwixx Green */
+#dice5 {
+    background-color: #f2f2f2;
+}
+
+/* Qwixx Gray */
+#dice6 {
+    background-color: #f2f2f2;
+}
+
+/* Qwixx Gray */
 
 .button-container {
     margin-top: 20px;
@@ -94,7 +160,8 @@ button {
 /* Responsive styles */
 @media (max-width: 600px) {
     .dice-container {
-        grid-template-columns: repeat(2, 50px); /* 2 columns for small screens */
+        grid-template-columns: repeat(2, 50px);
+        /* 2 columns for small screens */
     }
 
     .dice {
@@ -115,9 +182,23 @@ button {
 }
 
 @keyframes shake {
-    0% { transform: rotate(0deg); }
-    25% { transform: rotate(15deg); }
-    50% { transform: rotate(0deg); }
-    75% { transform: rotate(-15deg); }
-    100% { transform: rotate(0deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    25% {
+        transform: rotate(15deg);
+    }
+
+    50% {
+        transform: rotate(0deg);
+    }
+
+    75% {
+        transform: rotate(-15deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
 }

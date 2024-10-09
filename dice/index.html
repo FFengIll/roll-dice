@@ -28,48 +28,11 @@
     ></script>
     <!-- 引入Babel编译器 -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
-    <style>
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .controls,
-        .button-container {
-            margin: 10px;
-        }
-
-        .dice-container,
-        .extra-dice-container {
-            display: flex;
-            margin: 10px;
-            border: 1px solid #ccc;
-            padding: 10px;
-            min-height: 100px;
-            min-width: 100px;
-        }
-
-        .dice {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border: 1px solid #000;
-            margin: 5px;
-            cursor: pointer;
-        }
-
-        .selected {
-            border-color: red;
-        }
-    </style>
 </head>
 
 <body>
     <div id="root"></div>
-
-
+    
     <script
         src="roll.js"
         type="text/babel"
