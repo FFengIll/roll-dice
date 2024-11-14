@@ -29,7 +29,7 @@ const router = createBrowserRouter(
         },
     ],
     {
-        basename: "/roll-dice",
+        basename: "/roll-dice/dist",
     }
 );
 
