@@ -7,26 +7,31 @@ import RollDice from "./component/RollDice.tsx";
 import ScoreRecord from "./component/ScoreRecord.tsx";
 
 
-const router = createBrowserRouter([
+const router = createBrowserRouter(
+    [
+        {
+            path: "/",
+            element: (
+                <App/>
+            ),
+        },
+        {
+            path: "/view/roll-dice",
+            element: (
+                <RollDice/>
+            ),
+        },
+        {
+            path: "/view/score-record",
+            element: (
+                <ScoreRecord/>
+            ),
+        },
+    ],
     {
-        path: "/",
-        element: (
-            <App/>
-        ),
-    },
-    {
-        path: "/view/roll-dice",
-        element: (
-            <RollDice/>
-        ),
-    },
-    {
-        path: "/view/score-record",
-        element: (
-            <ScoreRecord/>
-        ),
-    },
-]);
+        basename: "/roll-dice",
+    }
+);
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
