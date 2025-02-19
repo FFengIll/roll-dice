@@ -10,6 +10,9 @@ const Dice = ({id, value = '', size = 50, style = {}, isSelected = false, onClic
                 width: size,
                 height: size,
                 fontSize: size * 0.5,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
                 ...style
             }}
             onClick={onClick}

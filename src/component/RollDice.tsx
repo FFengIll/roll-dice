@@ -3,7 +3,7 @@ import {DragDropContext, Draggable, Droppable} from 'react-beautiful-dnd';
 import Dice from './Dice';
 import './RollDice.css';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faMinus, faPlus, faSearchMinus, faSearchPlus} from '@fortawesome/free-solid-svg-icons';
+import {faMinus, faPlus, faSearchMinus, faSearchPlus, faHome} from '@fortawesome/free-solid-svg-icons';
 
 
 const initialDiceConfig = {
@@ -114,9 +114,16 @@ const RollDice = () => {
         });
     };
 
+    const goHome = () => {
+        window.location.href = '/roll-dice/dist/';
+    };
+
     return (
         <div className="container">
             <div className="controls">
+                <button className="control-btn" onClick={goHome}>
+                    <FontAwesomeIcon icon={faHome}/>
+                </button>
                 <button className="control-btn" onClick={() => changeSize(-10)}>
                     <FontAwesomeIcon icon={faSearchMinus}/>
                 </button>

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Container,
     TextField,
@@ -9,8 +9,12 @@ import {
     ListItemText,
     InputAdornment,
     ListItemIcon,
-    Grid2 as Grid
+    Grid2 as Grid,
+    IconButton
 } from '@mui/material';
+import { faMinus, faPlus, faSearchMinus, faSearchPlus, faHome } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import './ScoreRecord.css';
 
 const ScoreRecord = () => {
     const [items, setItems] = useState(() => {
@@ -55,16 +59,30 @@ const ScoreRecord = () => {
 
     const uniqueSortedItems = [...new Set(items)].sort((a, b) => a - b);
 
+    const goHome = () => {
+        window.location.href = '/roll-dice/dist/';
+    };
+
     return (
-        <Container sx={{marginTop: 2}}>
+        <Container sx={{ marginTop: 2 }}>
             <Grid container spacing={2}>
-                <Grid size={12}>
+                <button className="control-btn home-button" onClick={goHome} >
+                    <FontAwesomeIcon icon={faHome} />
+                </button>
+
+                <Grid size={12} >
                     <Typography variant="h4" gutterBottom>Score Record</Typography>
-                    <Typography variant="h5">Total: {sumItems}</Typography>
+
                 </Grid>
 
                 <Grid size={12}>
-                    <Grid container spacing={1}>
+                    <Typography variant="h5">Total: {sumItems}</Typography>
+                </Grid>
+
+                <Grid size={12} display="flex"
+                    justifyContent="center"
+                    alignItems="center">
+                    <Grid container spacing={1} >
                         <Grid
                             display="flex"
                             justifyContent="center"
@@ -84,9 +102,11 @@ const ScoreRecord = () => {
                     </Grid>
                 </Grid>
 
-                <Grid size={12}>
+                <Grid size={12} display="flex"
+                    justifyContent="center"
+                    alignItems="center">
                     <Grid container spacing={1} alignItems="center">
-                        <Grid>
+                        <Grid  >
                             <TextField
                                 type="number"
                                 value={inputValue}
@@ -108,15 +128,35 @@ const ScoreRecord = () => {
 
                         <Grid>
                             <Button variant="outlined" color="secondary" onClick={clearItems}
-                                    style={{marginRight: '10px'}}>Clear</Button>
+                                style={{ marginRight: '10px' }}>Clear</Button>
                             <Button variant="outlined" onClick={revokeItems} disabled={prevItems.length === 0}
-                                    style={{marginRight: '10px'}}>Revoke</Button>
+                                style={{ marginRight: '10px' }}>Revoke</Button>
                         </Grid>
                     </Grid>
                 </Grid>
 
-                <Grid size={12}>
-                    <List>
+                <Grid size={12} display="flex"
+                    justifyContent="center"
+                    alignItems="center">
+                    <List sx={{
+                        maxHeight: '300px',
+                        minWidth: '300px',
+                        overflow: 'auto',
+                        alignContent: 'center',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        '&::-webkit-scrollbar': {
+                            width: '8px',
+                        },
+                        '&::-webkit-scrollbar-track': {
+                            background: '#f1f1f1',
+                        },
+                        '&::-webkit-scrollbar-thumb': {
+                            background: '#888',
+                            borderRadius: '4px',
+                        },
+                    }}>
                         {items.slice().map((item, index) => {
                             const displayIndex = index + 1;
                             return (
@@ -124,7 +164,7 @@ const ScoreRecord = () => {
                                     <ListItemIcon>
                                         <Typography variant="body1">{`${displayIndex})`}</Typography>
                                     </ListItemIcon>
-                                    <ListItemText primary={`${item}`}/>
+                                    <ListItemText primary={`${item}`} />
                                 </ListItem>
                             );
                         }).reverse()}
