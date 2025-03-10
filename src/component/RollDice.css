@@ -10,6 +10,19 @@ body {
     /* Ensure positioning context for controls */
 }
 
+@font-face {
+    font-family: 'Source Sans Pro';
+    src: url("SourceSansPro-Regular.otf") format("opentype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+.ordinal {
+    font-variant-numeric: ordinal;
+    font-family: "Source Sans Pro";
+    font-size: 0.8em;
+}
+
 .container {
     display: flex;
     flex-direction: column;
@@ -116,38 +129,40 @@ body {
     display: grid;
     place-items: center;
     /* 水平和垂直居中 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
 }
 
-#dice1 {
+#dice-red {
+    /* Qwixx Red */
     background-color: #d9534f;
 }
 
-/* Qwixx Red */
-#dice2 {
+#dice-yellow {
+    /* Soft Yellow */
     background-color: #ffff99;
 }
 
-/* Soft Yellow */
-#dice3 {
+#dice-blue {
+    /* Qwixx Blue */
     background-color: #5b96de;
 }
 
-/* Qwixx Blue */
-#dice4 {
+#dice-green {
+    /* Qwixx Green */
     background-color: #5cb85c;
 }
 
-/* Qwixx Green */
-#dice5 {
+#dice-gray {
+    /* Qwixx Gray */
     background-color: #f2f2f2;
 }
 
-/* Qwixx Gray */
-#dice6 {
+#dice-extra {
+    /* Qwixx Gray */
     background-color: #f2f2f2;
 }
-
-/* Qwixx Gray */
 
 .button-container {
     margin-top: 20px;
@@ -180,7 +195,7 @@ button {
 }
 
 .dice.shaking {
-    animation: shake 0.5s infinite;
+    animation: shake 0.4s infinite;
 }
 
 @keyframes shake {

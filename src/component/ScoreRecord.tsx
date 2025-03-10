@@ -1,19 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-    Container,
-    TextField,
     Button,
-    Typography,
+    Container,
+    Grid2 as Grid,
+    InputAdornment,
     List,
     ListItem,
-    ListItemText,
-    InputAdornment,
     ListItemIcon,
-    Grid2 as Grid,
-    IconButton
+    ListItemText,
+    TextField,
+    Typography,
 } from '@mui/material';
-import { faMinus, faPlus, faSearchMinus, faSearchPlus, faHome } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useEffect, useState } from 'react';
 import './ScoreRecord.css';
 
 const ScoreRecord = () => {
@@ -111,18 +110,20 @@ const ScoreRecord = () => {
                                 type="number"
                                 value={inputValue}
                                 onChange={(e) => setInputValue(e.target.value)}
-                                onKeyPress={handleKeyPress}
+                                onKeyDown={handleKeyPress} // 使用 onKeyDown 替代 onKeyPress
                                 label="Enter a score"
                                 variant="outlined"
-                                InputProps={{
-                                    endAdornment: (
-                                        <InputAdornment position="end">
-                                            <Button variant="contained" color="primary" onClick={addItem}>
-                                                Add
-                                            </Button>
-                                        </InputAdornment>
-                                    ),
-                                }}
+                                slotProps={{
+                                    input: {
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <Button variant="contained" color="primary" onClick={addItem}>
+                                                    Add
+                                                </Button>
+                                            </InputAdornment>
+                                        ),
+                                    },
+                                }} // 使用 slotProps.input 替代 InputProps
                             />
                         </Grid>
 

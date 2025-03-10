@@ -1,8 +1,7 @@
-import React, {useState} from 'react'
-import './App.css'
-import Typography from "@mui/material/Typography"
-import {Card, CardContent, Grid2 as Grid} from "@mui/material";
-import {useNavigate} from "react-router-dom";
+import { Card, CardContent, Grid2 as Grid } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import { useNavigate } from "react-router-dom";
+import './App.css';
 
 
 function ChoiceGrid() {
@@ -16,7 +15,7 @@ function ChoiceGrid() {
         <Grid container spacing={2}>
             {Array.from(choices.entries()).map(([name, url]) => (
                 <Grid>
-                    <Card onClick={() => navigate({pathname: url,})} style={{cursor: 'pointer'}}>
+                    <Card onClick={() => navigate({ pathname: url, })} style={{ cursor: 'pointer' }}>
                         <CardContent className="card-content">
                             <Typography variant="h6" component="div">
                                 {name}
@@ -31,8 +30,6 @@ function ChoiceGrid() {
 
 
 function App() {
-    const [count, setCount] = useState(0)
-
     return (
         <>
             <ChoiceGrid></ChoiceGrid>
