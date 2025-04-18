@@ -1,10 +1,11 @@
-import React, {StrictMode} from 'react'
-import {createRoot} from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
-import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import App from './App.tsx';
+import RandomNum from './component/RandomNum.tsx';
 import RollDice from "./component/RollDice.tsx";
 import ScoreRecord from "./component/ScoreRecord.tsx";
+import './index.css';
 
 
 const router = createBrowserRouter(
@@ -12,19 +13,25 @@ const router = createBrowserRouter(
         {
             path: "/",
             element: (
-                <App/>
+                <App />
             ),
         },
         {
             path: "/view/roll-dice",
             element: (
-                <RollDice/>
+                <RollDice />
             ),
         },
         {
             path: "/view/score-record",
             element: (
-                <ScoreRecord/>
+                <ScoreRecord />
+            ),
+        },
+        {
+            path: "/view/random-num",
+            element: (
+                <RandomNum />
             ),
         },
     ],

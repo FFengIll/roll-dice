@@ -8,6 +8,7 @@ function ChoiceGrid() {
     const choices = new Map([
         ['Dice', './view/roll-dice'],
         ['Score', './view/score-record'],
+        ['Number', './view/random-num'],
     ]);
     const navigate = useNavigate();
 
