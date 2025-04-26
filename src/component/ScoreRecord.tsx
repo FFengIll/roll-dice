@@ -1,15 +1,12 @@
 import {
     Button,
-    Container,
-    Grid2 as Grid,
-    InputAdornment,
+    Col,
+    Input,
     List,
-    ListItem,
-    ListItemIcon,
-    ListItemText,
-    TextField,
-    Typography,
-} from '@mui/material';
+    Row,
+    Space,
+    Typography
+} from 'antd';
 import { useEffect, useState } from 'react';
 import './ScoreRecord.css';
 
@@ -28,14 +25,14 @@ const ScoreRecord = () => {
     const addItem = () => {
         const number = parseFloat(inputValue);
         if (!isNaN(number)) {
-            setPrevItems(items); // Store previous items before adding
+            setPrevItems(items);
             setItems([...items, number]);
             setInputValue('');
         }
     };
 
     const clearItems = () => {
-        setPrevItems(items); // Store current items for restoration
+        setPrevItems(items);
         setItems([]);
         setInputValue('');
     };
@@ -52,120 +49,97 @@ const ScoreRecord = () => {
     };
 
     const sumItems = items.reduce((acc, item) => acc + item, 0);
-
     const uniqueSortedItems = [...new Set(items)].sort((a, b) => a - b);
 
-    const goHome = () => {
-        window.location.href = '/roll-dice/dist/';
-    };
-
     return (
-        <Container sx={{ marginTop: 2 }}>
-            <Grid container spacing={2}>
-                <Grid size={12} >
-                    <Typography variant="h4" gutterBottom>Score Record</Typography>
+        <div style={{ padding: '16px' }}>
+            <Row gutter={[16, 16]}>
+                <Col span={24}>
+                    <Typography.Title level={4}>Score Record</Typography.Title>
+                </Col>
 
-                </Grid>
+                <Col span={24}>
+                    <Typography.Title level={5}>Total: {sumItems}</Typography.Title>
+                </Col>
 
-                <Grid size={12}>
-                    <Typography variant="h5">Total: {sumItems}</Typography>
-                </Grid>
-
-                <Grid size={12} display="flex"
-                    justifyContent="center"
-                    alignItems="center">
-                    <Grid container spacing={1} >
-                        <Grid
-                            display="flex"
-                            justifyContent="center"
-                            alignItems="center"
-                        >
-                            <Typography variant="h5" gutterBottom>
-                                {/* Quick:  */}
-                            </Typography>
-                        </Grid>
+                <Col span={24}>
+                    <Row justify="center" gutter={[8, 8]}>
                         {uniqueSortedItems.map((item, index) => (
-                            <Grid key={index}>
-                                <Button variant="outlined" onClick={() => setInputValue(item)}>
-                                    {item}
+                            <Col key={index}>
+                                <Button>
+                                    <Typography onClick={() => setInputValue(item.toString())}>
+                                        {item}
+                                    </Typography>
                                 </Button>
-                            </Grid>
+                            </Col>
                         ))}
-                    </Grid>
-                </Grid>
+                    </Row>
+                </Col>
 
-                <Grid size={12} display="flex"
-                    justifyContent="center"
-                    alignItems="center">
-                    <Grid container spacing={1} alignItems="center">
-                        <Grid  >
-                            <TextField
-                                type="number"
-                                value={inputValue}
-                                onChange={(e) => setInputValue(e.target.value)}
-                                onKeyDown={handleKeyPress} // 使用 onKeyDown 替代 onKeyPress
-                                label="Enter a score"
-                                variant="outlined"
-                                slotProps={{
-                                    input: {
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <Button variant="contained" color="primary" onClick={addItem}>
-                                                    Add
-                                                </Button>
-                                            </InputAdornment>
-                                        ),
-                                    },
-                                }} // 使用 slotProps.input 替代 InputProps
-                            />
-                        </Grid>
+                <Col span={24}>
+                    <Row justify="center" align="middle" gutter={[8, 8]}>
+                        <Col>
+                            <Space>
+                                <Input
+                                    type="number"
+                                    value={inputValue}
+                                    onChange={(e) => setInputValue(e.target.value)}
+                                    onKeyDown={handleKeyPress}
+                                    placeholder="Enter a score"
+                                    suffix={
+                                        <Button type="primary" onClick={addItem}>
+                                            Add
+                                        </Button>
+                                    }
+                                />
+                            </Space>
+                        </Col>
+                        <Col>
+                            <Space>
+                                <Button
+                                    style={{
+                                        borderColor: 'red',
+                                        color: 'red',
+                                    }}
+                                    onClick={clearItems}
+                                >
+                                    Clear
+                                </Button>
+                                <Button
+                                    style={{
+                                        borderColor: 'blue',
+                                        color: 'blue',
+                                    }}
+                                    disabled={prevItems.length === 0}
+                                    onClick={revokeItems}
+                                >
+                                    Revoke
+                                </Button>
+                            </Space>
+                        </Col>
+                    </Row>
+                </Col>
 
-                        <Grid>
-                            <Button variant="outlined" color="secondary" onClick={clearItems}
-                                style={{ marginRight: '10px' }}>Clear</Button>
-                            <Button variant="outlined" onClick={revokeItems} disabled={prevItems.length === 0}
-                                style={{ marginRight: '10px' }}>Revoke</Button>
-                        </Grid>
-                    </Grid>
-                </Grid>
-
-                <Grid size={12} display="flex"
-                    justifyContent="center"
-                    alignItems="center">
-                    <List sx={{
-                        maxHeight: '300px',
-                        minWidth: '300px',
-                        overflow: 'auto',
-                        alignContent: 'center',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        '&::-webkit-scrollbar': {
-                            width: '8px',
-                        },
-                        '&::-webkit-scrollbar-track': {
-                            background: '#f1f1f1',
-                        },
-                        '&::-webkit-scrollbar-thumb': {
-                            background: '#888',
-                            borderRadius: '4px',
-                        },
-                    }}>
-                        {items.slice().map((item, index) => {
-                            const displayIndex = index + 1;
-                            return (
-                                <ListItem key={index}>
-                                    <ListItemIcon>
-                                        <Typography variant="body1">{`${displayIndex})`}</Typography>
-                                    </ListItemIcon>
-                                    <ListItemText primary={`${item}`} />
-                                </ListItem>
-                            );
-                        }).reverse()}
-                    </List>
-                </Grid>
-            </Grid>
-        </Container>
+                <Col span={24}>
+                    <Row justify="center">
+                        <List
+                            style={{
+                                maxHeight: '400px',
+                                minWidth: '200px',
+                                overflow: 'auto',
+                            }}
+                            dataSource={[...items].reverse()}
+                            renderItem={(item, index) => (
+                                <List.Item>
+                                    <Typography.Text>{`${items.length - index})`}</Typography.Text>
+                                    <Typography.Text style={{ marginLeft: '8px' }}>{item}</Typography.Text>
+                                </List.Item>
+                            )}
+                        />
+                    </Row>
+                </Col>
+            </Row>
+        </div>
     );
 };
 
