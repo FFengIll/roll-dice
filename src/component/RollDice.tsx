@@ -36,7 +36,7 @@ const RollDice = () => {
             setDiceConfig(prevConfig => ({
                 dice: prevConfig.dice.map(row => row.map(dice => ({
                     ...dice,
-                    value: '' // Clear value to simulate shaking
+                    value: 0 // Clear value to simulate shaking
                 })))
             }));
         };
