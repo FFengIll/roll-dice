@@ -1,4 +1,4 @@
-import { faHome, faMinus, faSearchMinus, faSearchPlus } from '@fortawesome/free-solid-svg-icons';
+import { faMinus, faSearchMinus, faSearchPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
@@ -114,16 +114,10 @@ const RollDice = () => {
         });
     };
 
-    const goHome = () => {
-        window.location.href = '/roll-dice/dist/';
-    };
 
     return (
         <div className="container">
             <div className="controls">
-                <button className="control-btn" onClick={goHome}>
-                    <FontAwesomeIcon icon={faHome} />
-                </button>
                 <button className="control-btn" onClick={() => changeSize(-10)}>
                     <FontAwesomeIcon icon={faSearchMinus} />
                 </button>
