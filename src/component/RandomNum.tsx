@@ -1,4 +1,4 @@
-import { Button, Divider, Flex, Input, Typography } from "antd";
+import { Button, Divider, Flex, Input, Space, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 
 const RandomNum: React.FC = () => {
@@ -25,7 +25,7 @@ const RandomNum: React.FC = () => {
     }, []);
 
     return (
-        <div style={{ padding: "24px" }}>
+        <div style={{ padding: "24px", alignItems: "center", }}>
             <Typography.Title level={3} style={{ marginBottom: "16px" }}>
                 Random Number Generator
             </Typography.Title>
@@ -48,7 +48,7 @@ const RandomNum: React.FC = () => {
                 ))}
             </Flex>
             <Divider></Divider>
-            <div style={{ marginBottom: "16px", display: "flex", justifyContent: "center", textAlign: "center" }}>
+            <Space direction="horizontal" size="small" >
                 <Input
                     type="number"
                     value={digitCount}
@@ -56,12 +56,26 @@ const RandomNum: React.FC = () => {
                     style={{ marginRight: "8px", width: "200px" }}
                     placeholder="Number of Digits"
                 />
-            </div>
-            <div>
+                <Button onClick={() => setDigitCount((prev) => prev + 1)}>+</Button>
+                <Button onClick={() => setDigitCount((prev) => Math.max(1, prev - 1))}>-</Button>
+            </Space>
+            <Divider></Divider>
+            <Space direction="horizontal" size="large" >
                 <Button type="primary" onClick={generateRandomNumbers}>
                     Generate
                 </Button>
-            </div>
+                <Button
+                    type="primary"
+                    onClick={() => {
+                        const numberString = randomNumbers.join('');
+                        navigator.clipboard.writeText(numberString).then(() => {
+                            console.log("Copied to clipboard:", numberString);
+                        });
+                    }}
+                >
+                    Copy
+                </Button>
+            </Space>
         </div>
     );
 };
