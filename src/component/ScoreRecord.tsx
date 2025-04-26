@@ -1,5 +1,3 @@
-import { faHome } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     Button,
     Container,
@@ -22,7 +20,6 @@ const ScoreRecord = () => {
     });
     const [inputValue, setInputValue] = useState('');
     const [prevItems, setPrevItems] = useState([]);
-    const [spacing, setSpacing] = useState(5); // 控制间距
 
     useEffect(() => {
         localStorage.setItem('items', JSON.stringify(items));
@@ -65,10 +62,6 @@ const ScoreRecord = () => {
     return (
         <Container sx={{ marginTop: 2 }}>
             <Grid container spacing={2}>
-                <button className="control-btn home-button" onClick={goHome} >
-                    <FontAwesomeIcon icon={faHome} />
-                </button>
-
                 <Grid size={12} >
                     <Typography variant="h4" gutterBottom>Score Record</Typography>
 
