@@ -127,8 +127,14 @@ const RollDice = () => {
                 <button className="control-btn" onClick={() => addDice(6)}>
                     Add D6
                 </button>
+                <button className="control-btn" onClick={() => addDice(8)}>
+                    Add D8
+                </button>
                 <button className="control-btn" onClick={() => addDice(10)}>
                     Add D10
+                </button>
+                <button className="control-btn" onClick={() => addDice(12)}>
+                    Add D12
                 </button>
                 <button className="control-btn" onClick={() => addDice(20)}>
                     Add D20

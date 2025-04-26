@@ -38,7 +38,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid #000;
+    /* border: 1px solid #000; */
     margin: 6px;
     cursor: pointer;
 }
@@ -120,8 +120,8 @@ body {
 .dice {
     width: 50px;
     height: 50px;
-    background-color: #fff;
-    border: 2px solid #000;
+    /* background-color: #fff; */
+    /* border: 2px solid #000; */
     border-radius: 10px;
     font-size: 24px;
     line-height: 50px;
@@ -132,6 +132,11 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
     cursor: pointer;
+}
+
+.dice.dice6 {
+    background-color: #fff;
+    border: 2px solid #000;
 }
 
 #dice-red {
@@ -196,6 +201,13 @@ button {
 
 .dice.shaking {
     animation: shake 0.4s infinite;
+}
+
+.dice.shaking6 {
+    animation: shake 0.4s infinite;
+
+    background-color: #fff;
+    border: 2px solid #000;
 }
 
 @keyframes shake {
