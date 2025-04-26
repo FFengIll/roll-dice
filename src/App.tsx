@@ -1,10 +1,9 @@
-import { Card, CardContent, Grid2 as Grid } from "@mui/material";
-import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import './App.css';
 
 import { faHome } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Card, Flex, Typography } from "antd";
 import RandomNum from './component/RandomNum';
 import RollDice from './component/RollDice';
 import ScoreRecord from './component/ScoreRecord';
@@ -42,9 +41,9 @@ function App() {
     }
 
     const views = new Map([
-        ['Dice', <RollDice />],
-        ['Score', <ScoreRecord />],
-        ['Number', <RandomNum />],
+        ['Roll Dice', <RollDice />],
+        ['Score Record', <ScoreRecord />],
+        ['Number Gen', <RandomNum />],
     ]);
 
     if (activeView) {
@@ -60,19 +59,22 @@ function App() {
         <>
             {homeButton()}
 
-            <Grid container spacing={2}>
+            <Flex wrap gap="small">
                 {Array.from(views.keys()).map((name) => (
-                    <Grid key={name}>
-                        <Card onClick={() => setActiveView(name)} style={{ cursor: 'pointer' }}>
-                            <CardContent className="card-content">
-                                <Typography variant="h6" component="div">
-                                    {name}
-                                </Typography>
-                            </CardContent>
-                        </Card>
-                    </Grid>
-                ))}
-            </Grid>
+                    <Card
+                        title={
+                            <Typography.Title level={3}>
+                                {name}
+                            </Typography.Title>
+                        }
+                        onClick={() => setActiveView(name)}
+                        style={{ cursor: 'pointer', width: '250px', textAlign: 'center' }}
+                    >
+
+                    </Card >
+                ))
+                }
+            </Flex >
         </>
     );
 }
