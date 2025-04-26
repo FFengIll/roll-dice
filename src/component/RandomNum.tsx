@@ -1,4 +1,4 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Button, Divider, Flex, Input, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 
 const RandomNum: React.FC = () => {
@@ -25,45 +25,44 @@ const RandomNum: React.FC = () => {
     }, []);
 
     return (
-        <Box sx={{ p: 4 }}>
-            <Typography variant="h4" gutterBottom>
+        <div style={{ padding: "24px" }}>
+            <Typography.Title level={3} style={{ marginBottom: "16px" }}>
                 Random Number Generator
-            </Typography>
-            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mb: 2, mt: 2 }}>
+            </Typography.Title>
+            <Flex wrap gap="small">
                 {randomNumbers.map((num, index) => (
-                    <Box
+                    <div
                         key={index}
-                        sx={{
-                            width: 50,
-                            height: 50,
+                        style={{
+                            width: "50px",
+                            height: "50px",
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center",
                             border: "1px solid black",
-                            borderRadius: 2,
+                            borderRadius: "4px",
                         }}
                     >
-                        <Typography variant="h6">{num}</Typography>
-                    </Box>
+                        <Typography.Text strong>{num}</Typography.Text>
+                    </div>
                 ))}
-            </Box>
-            <Box sx={{ mb: 2, display: "flex", justifyContent: "center", textAlign: "center" }}>
-                <TextField
-                    label="Number of Digits"
+            </Flex>
+            <Divider></Divider>
+            <div style={{ marginBottom: "16px", display: "flex", justifyContent: "center", textAlign: "center" }}>
+                <Input
                     type="number"
                     value={digitCount}
-                    onChange={handleDigitCountChange}
-                    inputProps={{ min: 1 }}
-                    sx={{ mr: 2 }}
+                    onChange={(e) => handleDigitCountChange(e as React.ChangeEvent<HTMLInputElement>)}
+                    style={{ marginRight: "8px", width: "200px" }}
+                    placeholder="Number of Digits"
                 />
-            </Box>
-            <Box>
-                <Button variant="contained" onClick={generateRandomNumbers}>
+            </div>
+            <div>
+                <Button type="primary" onClick={generateRandomNumbers}>
                     Generate
                 </Button>
-            </Box>
-
-        </Box>
+            </div>
+        </div>
     );
 };
 
