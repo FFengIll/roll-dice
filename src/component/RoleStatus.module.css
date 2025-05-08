@@ -1,0 +1,37 @@
+.roleStatus {
+  margin-bottom: 20px;
+}
+
+.label {
+  font-size: 20px;
+  font-weight: 500;
+  min-width: 80px;
+  display: inline-block;
+}
+
+.controlButton {
+  height: 40px !important;
+  width: 40px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.controlButton span {
+  font-size: 20px;
+}
+
+.numberInput {
+  width: 100px !important;
+  height: 40px !important;
+  font-size: 20px !important;
+}
+
+.colorPicker {
+  height: 32px !important;
+}
+
+.colorPicker :global(.ant-color-picker-trigger) {
+  height: 40px !important;
+  width: 40px !important;
+}
