@@ -172,12 +172,24 @@ body {
 
 .button-container {
     margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.button-container button {
+    min-width: 120px;
+    justify-content: center;
 }
 
 button {
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 /* Responsive styles */
@@ -276,6 +288,23 @@ button {
         -webkit-tap-highlight-color: transparent;
     }
 
+    .button-container {
+        flex-direction: column;
+        gap: 8px;
+        padding: 0 10px;
+    }
+
+    .button-container button {
+        width: 100%;
+        max-width: 200px;
+        min-width: auto;
+    }
+
+    .single-reroll-btn {
+        padding: 12px 20px;
+        font-size: 16px;
+    }
+
     .dice-container {
         min-width: 280px;
         padding: 8px;
@@ -283,7 +312,7 @@ button {
     }
 
     .container {
-        padding-bottom: 80px; /* Space for mobile controls */
+        padding-bottom: 120px; /* Space for mobile controls and buttons */
     }
 }
 
@@ -419,6 +448,33 @@ button {
     background-color: #007bff;
     color: white;
     border-color: #0056b3;
+}
+
+/* Single reroll button styling */
+.single-reroll-btn {
+    padding: 10px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.2s ease;
+}
+
+.single-reroll-btn.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #0056b3;
+    box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3);
+}
+
+.single-reroll-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.single-reroll-btn.active:hover {
+    box-shadow: 0 3px 8px rgba(0, 123, 255, 0.4);
 }
 
 .control-btn:disabled {

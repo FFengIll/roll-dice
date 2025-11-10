@@ -17,7 +17,7 @@ import {
     useSortable
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { faDice, faMinus, faRedo, faSearchMinus, faSearchPlus, faUndo } from '@fortawesome/free-solid-svg-icons';
+import { faDice, faDiceD6, faMinus, faRedo, faSearchMinus, faSearchPlus, faUndo } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { CustomDice } from './Dice';
@@ -531,13 +531,6 @@ const RollDice = () => {
                     <FontAwesomeIcon icon={faMinus} />
                 </button>
                 <button
-                    className={`control-btn ${enableSingleReroll ? 'active' : ''}`}
-                    onClick={() => setEnableSingleReroll(!enableSingleReroll)}
-                    title={enableSingleReroll ? "Disable single dice re-roll" : "Enable single dice re-roll"}
-                >
-                    <FontAwesomeIcon icon={faDice} />
-                </button>
-                <button
                     className="control-btn"
                     onClick={undo}
                     disabled={!canUndo}
@@ -608,7 +601,18 @@ const RollDice = () => {
             </DndContext>
 
             <div className="button-container">
-                <button onClick={rollDice}>ROLL</button>
+                <button
+                    className={`single-reroll-btn ${enableSingleReroll ? 'active' : ''}`}
+                    onClick={() => setEnableSingleReroll(!enableSingleReroll)}
+                    title={enableSingleReroll ? "Disable single dice re-roll" : "Enable single dice re-roll"}
+                >
+                    <FontAwesomeIcon icon={faDice} />
+                    {enableSingleReroll ? ' Single Mode' : ' Single Mode'}
+                </button>
+                <button onClick={rollDice}>
+                    <FontAwesomeIcon icon={faDiceD6} />
+                    Roll
+                </button>
             </div>
 
             {showUndoFeedback && (
