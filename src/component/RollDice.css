@@ -231,3 +231,107 @@ button {
         transform: rotate(0deg);
     }
 }
+
+/* Mobile-optimized styles */
+.sortable-dice {
+    display: inline-block;
+    margin: 6px;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+}
+
+.sortable-dice.dragging {
+    z-index: 1000;
+    transform: scale(1.1);
+    opacity: 0.8;
+}
+
+/* Enhanced touch feedback */
+.sortable-dice:active {
+    transform: scale(0.95);
+}
+
+/* Mobile-specific controls */
+@media (max-width: 768px) {
+    .controls {
+        position: fixed;
+        top: 5px;
+        right: 5px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 4px;
+        max-width: 200px;
+        justify-content: flex-end;
+    }
+
+    .control-btn {
+        padding: 8px 8px;
+        font-size: 14px;
+        min-width: 36px;
+        min-height: 36px;
+        touch-action: manipulation; /* Prevent double-tap zoom */
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .dice-container {
+        min-width: 280px;
+        padding: 8px;
+        margin: 5px;
+    }
+
+    .container {
+        padding-bottom: 80px; /* Space for mobile controls */
+    }
+}
+
+@media (max-width: 480px) {
+    .controls {
+        top: 0;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        max-width: none;
+        background: rgba(255, 255, 255, 0.95);
+        padding: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 0 0 8px 8px;
+    }
+
+    .control-btn {
+        font-size: 16px;
+        padding: 10px;
+        width: 100%;
+        margin-bottom: 4px;
+    }
+
+    .dice-container {
+        min-width: 260px;
+        min-height: 80px;
+    }
+
+    .dice {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+        line-height: 40px;
+        margin: 4px;
+    }
+
+    body {
+        padding-top: 200px; /* Account for top controls on mobile */
+    }
+}
+
+/* Large screen optimizations */
+@media (min-width: 1024px) {
+    .dice-container {
+        min-width: 400px;
+    }
+
+    .control-btn {
+        font-size: 20px;
+        padding: 8px 12px;
+    }
+}
