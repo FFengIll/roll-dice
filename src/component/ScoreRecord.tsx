@@ -11,15 +11,16 @@ import { useEffect, useState } from 'react';
 import './ScoreRecord.css';
 
 const ScoreRecord = () => {
+    const key = "ScoreRecord"
     const [items, setItems] = useState(() => {
-        const savedItems = localStorage.getItem('items');
+        const savedItems = localStorage.getItem(key);
         return savedItems ? JSON.parse(savedItems) : [];
     });
     const [inputValue, setInputValue] = useState('');
     const [prevItems, setPrevItems] = useState([]);
 
     useEffect(() => {
-        localStorage.setItem('items', JSON.stringify(items));
+        localStorage.setItem(key, JSON.stringify(items));
     }, [items]);
 
     const addItem = () => {

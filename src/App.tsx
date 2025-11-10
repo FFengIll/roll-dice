@@ -1,6 +1,6 @@
-import { faHome } from "@fortawesome/free-solid-svg-icons";
+import { faHome, faRefresh } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Card, Flex, Typography } from "antd";
+import { Card, Flex, FloatButton, Typography } from "antd";
 import React, { useState } from 'react';
 
 import './App.css';
@@ -26,31 +26,46 @@ const RoleStatusPanel: React.FC = () => {
 function App() {
     const [activeView, setActiveView] = useState<string | null>(null);
 
-
     const homeButton = () => {
         return (
-            <button
+            <FloatButton
                 onClick={() => setActiveView(null)}
-                className="controll-button"
+                // className="controll-button"
+                type="primary"
                 style={{
-                    position: 'fixed',
-                    top: '16px',
-                    left: '16px',
-                    zIndex: 1000,
                     width: '48px',
                     height: '48px',
-                    backgroundColor: '#1976d2',
-                    color: '#fff',
-                    border: 'none',
-                    borderRadius: '50%',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
+                    insetInlineEnd: 96
                 }}
+                icon={<FontAwesomeIcon icon={faHome} />}
             >
-                <FontAwesomeIcon icon={faHome} />
-            </button>
+            </FloatButton>
+        )
+    }
+
+    const resetButton = () => {
+        return (
+            <FloatButton
+                onClick={() => {
+                    // Remove all localStorage items with specific prefixes
+                    // Object.keys(localStorage).forEach(key => {
+                    //     if (activeView && key.startsWith(activeView)) {
+                    //         console.log('Removing:', key);
+                    //         localStorage.removeItem(key);
+                    //     }
+                    // });
+                    // setActiveView(activeView)
+                }}
+                type="primary"
+                // className="controll-button"
+                style={{
+                    width: '48px',
+                    height: '48px',
+                    insetInlineEnd: 24
+                }}
+                icon={<FontAwesomeIcon icon={faRefresh} />}
+            >
+            </FloatButton>
         )
     }
 
@@ -64,7 +79,9 @@ function App() {
     if (activeView) {
         return (
             <div>
+
                 {homeButton()}
+                {resetButton()}
                 {views.get(activeView)}
             </div>
         );
@@ -72,22 +89,25 @@ function App() {
 
     return (
         <>
+
             {homeButton()}
+            {resetButton()}
+
 
             <Flex wrap gap="small">
-                {Array.from(views.keys()).map((name) => (
-                    <Card
-                        title={
-                            <Typography.Title level={3}>
-                                {name}
-                            </Typography.Title>
-                        }
-                        onClick={() => setActiveView(name)}
-                        style={{ cursor: 'pointer', width: '250px', textAlign: 'center' }}
-                    >
-
-                    </Card >
-                ))
+                {
+                    Array.from(views.keys()).map((name) => (
+                        <Card
+                            title={
+                                <Typography.Title level={3}>
+                                    {name}
+                                </Typography.Title>
+                            }
+                            onClick={() => setActiveView(name)}
+                            style={{ cursor: 'pointer', width: '250px', textAlign: 'center' }}
+                        >
+                        </Card >
+                    ))
                 }
             </Flex >
         </>

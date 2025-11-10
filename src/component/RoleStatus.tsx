@@ -11,8 +11,19 @@ interface RoleStatusProps {
 }
 
 const RoleStatus: React.FC<RoleStatusProps> = ({ label, defaultColor, defaultValue = 0 }) => {
-    const [value, setValue] = useState(defaultValue);
+    // Load initial value from localStorage if exists
+    const storageKey = `RoleStatus.${label}`;
+    const initialValue = localStorage.getItem(storageKey)
+        ? Number(localStorage.getItem(storageKey))
+        : defaultValue;
+
+    const [value, setValue] = useState(initialValue);
     const [color, setColor] = useState<Color>(defaultColor);
+
+    // Save value to localStorage whenever it changes
+    React.useEffect(() => {
+        localStorage.setItem(storageKey, value.toString());
+    }, [value, storageKey]);
 
     const handleIncrease = () => {
         setValue(prev => prev + 1);
@@ -57,6 +68,12 @@ const RoleStatus: React.FC<RoleStatusProps> = ({ label, defaultColor, defaultVal
                     icon={<PlusOutlined />}
                     onClick={handleIncrease}
                 />
+                {/* <Button
+                    className={styles.controlButton}
+                    onClick={() => setValue(0)}
+                >
+                    <ReloadOutlined />
+                </Button> */}
             </Space>
         </div>
     );
