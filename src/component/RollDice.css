@@ -58,11 +58,12 @@ body {
     /* Fixed positioning to keep it in the top-right corner */
     top: 10px;
     right: 10px;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 6px;
     z-index: 1000;
     /* Ensure controls are above other content */
+    width: auto;
 }
 
 .control-btn {
@@ -259,8 +260,8 @@ button {
         position: fixed;
         top: 5px;
         right: 5px;
-        flex-direction: row;
-        flex-wrap: wrap;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
         gap: 4px;
         max-width: 200px;
         justify-content: flex-end;
@@ -291,7 +292,9 @@ button {
         top: 0;
         left: 0;
         right: 0;
-        flex-direction: column;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4px;
         max-width: none;
         background: rgba(255, 255, 255, 0.95);
         padding: 8px;
@@ -300,10 +303,10 @@ button {
     }
 
     .control-btn {
-        font-size: 16px;
-        padding: 10px;
+        font-size: 14px;
+        padding: 8px 6px;
         width: 100%;
-        margin-bottom: 4px;
+        margin-bottom: 0;
     }
 
     .dice-container {

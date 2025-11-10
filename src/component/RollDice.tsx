@@ -19,7 +19,7 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 import { faDice, faMinus, faRedo, faSearchMinus, faSearchPlus, faUndo } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { CustomDice } from './Dice';
 import './RollDice.css';
 
@@ -200,20 +200,22 @@ const initialDiceConfig = {
 
 const RollDice = () => {
     // Ensure proper initialization with defensive checks
-    const [diceConfig, setDiceConfig] = useState<DiceConfig>(() => {
-        return initialDiceConfig && initialDiceConfig.dice ? initialDiceConfig : { dice: [[], [], []] };
-    });
+    const safeInitialConfig = useMemo(() =>
+        initialDiceConfig && initialDiceConfig.dice
+            ? initialDiceConfig
+            : { dice: [[], [], []] }
+        , []);
+
+    const [diceConfig, setDiceConfig] = useState<DiceConfig>(safeInitialConfig);
     const [diceSize, setDiceSize] = useState(50);
     const [selectedDiceId, setSelectedDiceId] = useState<string | null>(null);
     const [activeId, setActiveId] = useState<string | null>(null);
     const [showDeleteButtons, setShowDeleteButtons] = useState(false);
     const [enableSingleReroll, setEnableSingleReroll] = useState(false);
-    const [history, setHistory] = useState<DiceConfig[]>(() => {
-        const initial = initialDiceConfig && initialDiceConfig.dice ? initialDiceConfig : { dice: [[], [], []] };
-        return [initial];
-    });
+    const [history, setHistory] = useState<DiceConfig[]>([safeInitialConfig]);
     const [historyIndex, setHistoryIndex] = useState(0);
     const [showUndoFeedback, setShowUndoFeedback] = useState(false);
+    const [feedbackMessage, setFeedbackMessage] = useState('');
 
     // Setup sensors for different input types with mobile optimization
     const sensors = useSensors(
@@ -242,33 +244,46 @@ const RollDice = () => {
         }
 
         setHistory(prevHistory => {
+            // Ensure we always have at least one item (initial state)
+            if (prevHistory.length === 0) {
+                console.warn('History was empty, adding initial state');
+                setHistoryIndex(0);
+                return [safeInitialConfig, newConfig];
+            }
+
             const newHistory = prevHistory.slice(0, historyIndex + 1);
             newHistory.push(newConfig);
+
             // Limit history to 50 items to prevent memory issues
             if (newHistory.length > 50) {
                 newHistory.shift();
+                // Update history index when we remove an item
+                setHistoryIndex(prev => Math.max(0, prev - 1));
                 return newHistory;
             }
+
+            // Normal case: increment history index
+            setHistoryIndex(prev => prev + 1);
             return newHistory;
         });
-        setHistoryIndex(prev => Math.min(prev + 1, 49));
-    }, [historyIndex]);
+    }, [historyIndex, safeInitialConfig]);
 
-    const showFeedback = useCallback(() => {
+    const showFeedback = useCallback((message: string) => {
+        setFeedbackMessage(message);
         setShowUndoFeedback(true);
         setTimeout(() => setShowUndoFeedback(false), 1000);
     }, []);
 
     const handleDiceClick = useCallback((id: string) => {
         if (enableSingleReroll) {
-            // Single dice re-roll logic - more stable approach
+            // Single dice re-roll logic - simplified and more reliable
             setDiceConfig(prevConfig => {
                 if (!prevConfig || !prevConfig.dice) {
                     console.error('Invalid prevConfig in handleDiceClick');
                     return prevConfig;
                 }
 
-                // First, add shake state to history
+                // Create shake state
                 const shakeConfig = {
                     dice: prevConfig.dice.map(row =>
                         row.map(dice => {
@@ -283,29 +298,23 @@ const RollDice = () => {
                 // Add shake state to history
                 addToHistory(shakeConfig);
 
-                // Schedule the actual roll
+                // Schedule the final roll
                 setTimeout(() => {
-                    setDiceConfig(currentConfig => {
-                        if (!currentConfig || !currentConfig.dice) {
-                            console.error('Invalid currentConfig in setTimeout');
-                            return currentConfig;
-                        }
+                    // Generate the final config directly
+                    const finalConfig = {
+                        dice: shakeConfig.dice.map(row =>
+                            row.map(dice => {
+                                if (dice && dice.id === id) {
+                                    return { ...dice, value: Math.floor(Math.random() * dice.type) + 1 };
+                                }
+                                return dice;
+                            })
+                        )
+                    };
 
-                        const finalConfig = {
-                            dice: currentConfig.dice.map(row =>
-                                row.map(dice => {
-                                    if (dice && dice.id === id) {
-                                        return { ...dice, value: Math.floor(Math.random() * dice.type) + 1 };
-                                    }
-                                    return dice;
-                                })
-                            )
-                        };
-
-                        // Add final result to history
-                        addToHistory(finalConfig);
-                        return finalConfig;
-                    });
+                    // Add final result to history and set it as current config
+                    addToHistory(finalConfig);
+                    setDiceConfig(finalConfig);
                 }, 300);
 
                 return shakeConfig;
@@ -386,7 +395,7 @@ const RollDice = () => {
             const newIndex = historyIndex - 1;
             setHistoryIndex(newIndex);
             setDiceConfig(history[newIndex]);
-            showFeedback();
+            showFeedback('Undo');
         }
     }, [historyIndex, history, showFeedback]);
 
@@ -395,13 +404,13 @@ const RollDice = () => {
             const newIndex = historyIndex + 1;
             setHistoryIndex(newIndex);
             setDiceConfig(history[newIndex]);
-            showFeedback();
+            showFeedback('Redo');
         }
     }, [historyIndex, history, showFeedback]);
 
     // Check if undo/redo is available
     const canUndo = historyIndex > 0;
-    const canRedo = historyIndex < history.length - 1;
+    const canRedo = (historyIndex < history.length - 1) && history.length > 0;
 
     // Find dice by ID across all rows
     const findDice = useCallback((id: string) => {
@@ -504,19 +513,19 @@ const RollDice = () => {
                     <FontAwesomeIcon icon={faSearchPlus} />
                 </button>
                 <button className="control-btn" onClick={() => addDice(6)}>
-                    Add D6
+                    D6
                 </button>
                 <button className="control-btn" onClick={() => addDice(8)}>
-                    Add D8
+                    D8
                 </button>
                 <button className="control-btn" onClick={() => addDice(10)}>
-                    Add D10
+                    D10
                 </button>
                 <button className="control-btn" onClick={() => addDice(12)}>
-                    Add D12
+                    D12
                 </button>
                 <button className="control-btn" onClick={() => addDice(20)}>
-                    Add D20
+                    D20
                 </button>
                 <button className="control-btn" onClick={removeDice}>
                     <FontAwesomeIcon icon={faMinus} />
@@ -604,7 +613,7 @@ const RollDice = () => {
 
             {showUndoFeedback && (
                 <div className="undo-feedback">
-                    {enableSingleReroll ? 'Action undone' : 'Undone'}
+                    {feedbackMessage}
                 </div>
             )}
         </div>
