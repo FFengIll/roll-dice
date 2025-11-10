@@ -324,6 +324,154 @@ button {
     }
 }
 
+/* Delete button styles */
+.delete-button {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #ff4444;
+    color: white;
+    border: 2px solid white;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease;
+    touch-action: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.delete-button:hover {
+    background-color: #cc0000;
+    transform: scale(1.1);
+}
+
+.delete-button:active {
+    transform: scale(0.95);
+}
+
+/* Long press feedback */
+.sortable-dice.show-delete {
+    animation: longPulse 0.3s ease-out;
+}
+
+@keyframes longPulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+}
+
+/* Dice wrapper for proper positioning */
+.dice-wrapper {
+    position: relative;
+    display: inline-block;
+    margin: 6px;
+}
+
+/* Mobile delete button optimizations */
+@media (max-width: 768px) {
+    .delete-button {
+        width: 24px;
+        height: 24px;
+        font-size: 14px;
+        top: -10px;
+        right: -10px;
+        border-width: 3px;
+    }
+}
+
+@media (max-width: 480px) {
+    .delete-button {
+        width: 28px;
+        height: 28px;
+        font-size: 16px;
+        top: -12px;
+        right: -12px;
+        border-width: 3px;
+    }
+
+    .dice-wrapper {
+        margin: 4px;
+    }
+}
+
+/* Active state for re-roll toggle */
+.control-btn.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #0056b3;
+}
+
+.control-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Single dice re-roll animation */
+.dice.single-reroll {
+    animation: singleReroll 0.3s ease-in-out;
+}
+
+@keyframes singleReroll {
+    0% {
+        transform: scale(1) rotate(0deg);
+    }
+    50% {
+        transform: scale(1.1) rotate(180deg);
+    }
+    100% {
+        transform: scale(1) rotate(360deg);
+    }
+}
+
+/* Undo/redo feedback */
+.undo-feedback {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 123, 255, 0.9);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    z-index: 2000;
+    animation: fadeInOut 1s ease-in-out;
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+    50% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+}
+
 /* Large screen optimizations */
 @media (min-width: 1024px) {
     .dice-container {
