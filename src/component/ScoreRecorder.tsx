@@ -12,7 +12,7 @@ import {
     Typography
 } from 'antd';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import './ScoreRecord.css';
+import './ScoreRecorder.css';
 
 interface ScoreItem {
     id: string;
