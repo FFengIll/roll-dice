@@ -120,11 +120,6 @@ const ScoreRecorder = () => {
         return [...new Set(values)].sort((a, b) => a - b);
     }, [items]);
 
-    const averageValue = useMemo(() =>
-        items.length > 0 ? sumItems / items.length : 0,
-        [sumItems, items.length]
-    );
-
     return (
         <div className="score-record-container" style={{ padding: '16px' }}>
             <Row gutter={[16, 16]}>
@@ -157,7 +152,7 @@ const ScoreRecorder = () => {
                 <Col span={24}>
                     <div className="score-summary-card">
                         <Row gutter={[16, 8]}>
-                            <Col xs={12} sm={8}>
+                            <Col xs={12}>
                                 <div className="stat-item">
                                     <Typography.Text type="secondary">Total</Typography.Text>
                                     <div className="stat-value">
@@ -167,17 +162,7 @@ const ScoreRecorder = () => {
                                     </div>
                                 </div>
                             </Col>
-                            <Col xs={12} sm={8}>
-                                <div className="stat-item">
-                                    <Typography.Text type="secondary">Average</Typography.Text>
-                                    <div>
-                                        <Typography.Title level={5} style={{ margin: 0 }}>
-                                            {averageValue.toFixed(2)}
-                                        </Typography.Title>
-                                    </div>
-                                </div>
-                            </Col>
-                            <Col xs={24} sm={8}>
+                            <Col xs={12}>
                                 <div className="stat-item">
                                     <Typography.Text type="secondary">Latest</Typography.Text>
                                     <div>
@@ -261,14 +246,12 @@ const ScoreRecorder = () => {
                 <Col span={24}>
                     <List
                         className="list-container"
-                        style={{
-                            maxHeight: '400px',
-                            overflow: 'auto',
-                        }}
                         dataSource={[...items].reverse()}
                         renderItem={(item, index) => (
                             <List.Item
                                 className="score-item"
+                                onClick={() => setInputValue(item.value.toString())}
+                                style={{ cursor: 'pointer' }}
                                 actions={[
                                     <Tooltip title={`Added at ${formatTimestamp(item.timestamp)}`}>
                                         <Typography.Text type="secondary" style={{ fontSize: '12px' }}>
@@ -286,24 +269,30 @@ const ScoreRecorder = () => {
                                             icon={<DeleteOutlined />}
                                             danger
                                             size="small"
-                                            className="delete-button"
+                                            onClick={(e) => e.stopPropagation()}
                                         />
                                     </Popconfirm>
                                 ]}
                             >
-                                <List.Item.Meta
-                                    title={
-                                        <Typography.Text>
-                                            <Typography.Text type="secondary">
-                                                #{items.length - index}
-                                            </Typography.Text>
-                                            {' '}
-                                            <Typography.Text strong style={{ fontSize: '16px' }}>
-                                                {item.value}
-                                            </Typography.Text>
-                                        </Typography.Text>
-                                    }
-                                />
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                    <div style={{
+                                        backgroundColor: '#f0f0f0',
+                                        color: '#666',
+                                        borderRadius: '50%',
+                                        width: '28px',
+                                        height: '28px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        fontSize: '12px',
+                                        fontWeight: 'bold'
+                                    }}>
+                                        #{items.length - index}
+                                    </div>
+                                    <Typography.Text strong style={{ fontSize: '18px' }}>
+                                        {item.value}
+                                    </Typography.Text>
+                                </div>
                             </List.Item>
                         )}
                         locale={{
