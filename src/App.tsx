@@ -7,7 +7,7 @@ import './App.css';
 import RandomNum from './component/RandomNum';
 import RoleStatus from './component/RoleStatus';
 import RollDice from './component/RollDice';
-import ScoreRecord from './component/ScoreRecord';
+import ScoreRecorder from './component/ScoreRecorder';
 
 const RoleStatusPanel: React.FC = () => {
     return (
@@ -71,7 +71,7 @@ function App() {
 
     const views = new Map([
         ['Roll Dice', <RollDice />],
-        ['Score Record', <ScoreRecord />],
+        ['Score Record', <ScoreRecorder />],
         ['Number Gen', <RandomNum />],
         ['Role Status', <RoleStatusPanel />]
     ]);

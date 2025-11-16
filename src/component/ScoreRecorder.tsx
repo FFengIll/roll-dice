@@ -1,17 +1,17 @@
+import { ClearOutlined, DeleteOutlined, UndoOutlined } from '@ant-design/icons';
 import {
     Button,
     Col,
     Input,
     List,
+    message,
+    Popconfirm,
     Row,
     Space,
-    Typography,
-    Popconfirm,
-    message,
-    Tooltip
+    Tooltip,
+    Typography
 } from 'antd';
-import { DeleteOutlined, UndoOutlined, ClearOutlined } from '@ant-design/icons';
-import { useEffect, useState, useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import './ScoreRecord.css';
 
 interface ScoreItem {
@@ -25,7 +25,7 @@ interface HistoryState {
     timestamp: number;
 }
 
-const ScoreRecord = () => {
+const ScoreRecorder = () => {
     const STORAGE_KEY = "ScoreRecord";
     const MAX_HISTORY = 10;
 
@@ -322,4 +322,4 @@ const ScoreRecord = () => {
     );
 };
 
-export default ScoreRecord;
+export default ScoreRecorder;

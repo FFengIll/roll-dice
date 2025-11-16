@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from './App.tsx';
 import RandomNum from './component/RandomNum.tsx';
 import RollDice from "./component/RollDice.tsx";
-import ScoreRecord from "./component/ScoreRecord.tsx";
+import ScoreRecorder from "./component/ScoreRecorder.tsx";
 import './index.css';
 
 
@@ -25,7 +25,7 @@ const router = createBrowserRouter(
         {
             path: "/view/score-record",
             element: (
-                <ScoreRecord />
+                <ScoreRecorder />
             ),
         },
         {
