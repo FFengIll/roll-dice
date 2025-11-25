@@ -1,18 +1,25 @@
-import { ClearOutlined, DeleteOutlined, UndoOutlined } from '@ant-design/icons';
+import { Clear, Delete, Undo } from '@mui/icons-material';
 import {
+    Alert,
+    Box,
     Button,
-    Col,
-    Input,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    IconButton,
+    InputAdornment,
     List,
-    message,
-    Popconfirm,
-    Row,
-    Space,
+    ListItem,
+    Paper,
+    Snackbar,
+    Stack,
+    TextField,
     Tooltip,
     Typography
-} from 'antd';
+} from '@mui/material';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import './ScoreRecorder.css';
 
 interface ScoreItem {
     id: string;
@@ -41,13 +48,17 @@ const ScoreRecorder = () => {
 
     const [inputValue, setInputValue] = useState('');
     const [history, setHistory] = useState<HistoryState[]>([]);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
 
     useEffect(() => {
         try {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
         } catch (error) {
             console.error('Error saving items:', error);
-            message.error('Failed to save data');
+            setSnackbarMessage('Failed to save data');
+            setSnackbarOpen(true);
         }
     }, [items]);
 
@@ -60,7 +71,6 @@ const ScoreRecorder = () => {
                 timestamp: Date.now()
             };
 
-            // Save current state to history before making changes
             setHistory(prev => [
                 { items: [...items], timestamp: Date.now() },
                 ...prev.slice(0, MAX_HISTORY - 1)
@@ -69,7 +79,8 @@ const ScoreRecorder = () => {
             setItems(prev => [...prev, newItem]);
             setInputValue('');
         } else {
-            message.warning('Please enter a valid number');
+            setSnackbarMessage('Please enter a valid number');
+            setSnackbarOpen(true);
         }
     }, [inputValue, items]);
 
@@ -121,193 +132,257 @@ const ScoreRecorder = () => {
     }, [items]);
 
     return (
-        <div className="score-record-container" style={{ padding: '16px' }}>
-            <Row gutter={[16, 16]}>
-                <Col span={24}>
-                    <Row justify="space-between" align="middle">
-                        <Col>
-                            <Typography.Title level={4} style={{ margin: 0 }}>
-                                Score Record
-                            </Typography.Title>
-                        </Col>
-                        <Col>
-                            <Space>
-                                <Typography.Text type="secondary">
-                                    Count: {items.length}
-                                </Typography.Text>
-                                {history.length > 0 && (
-                                    <Tooltip title={`Undo (${history.length} available)`}>
-                                        <Button
-                                            icon={<UndoOutlined />}
-                                            onClick={undo}
-                                            type="text"
-                                        />
-                                    </Tooltip>
-                                )}
-                            </Space>
-                        </Col>
-                    </Row>
-                </Col>
+        <Box sx={{
+            maxWidth: { xs: '100%', sm: '1000px' },
+            minWidth: "50vw",
+            margin: '0 auto',
+            padding: { xs: 2, sm: 3 }
+        }}>
+            {/* Header */}
+            <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 3 }}>
+                <Typography variant="h4" fontWeight="bold">
+                    Score Record
+                </Typography>
+                {/* <Typography color="text.secondary">
+                    Total: {items.length} scores
+                </Typography> */}
+            </Stack>
 
-                <Col span={24}>
-                    <div className="score-summary-card">
-                        <Row gutter={[16, 8]}>
-                            <Col xs={12}>
-                                <div className="stat-item">
-                                    <Typography.Text type="secondary">Total</Typography.Text>
-                                    <div className="stat-value">
-                                        <Typography.Title level={3} style={{ margin: 0 }}>
-                                            {sumItems}
-                                        </Typography.Title>
-                                    </div>
-                                </div>
-                            </Col>
-                            <Col xs={12}>
-                                <div className="stat-item">
-                                    <Typography.Text type="secondary">Latest</Typography.Text>
-                                    <div>
-                                        <Typography.Title level={5} style={{ margin: 0, color: '#52c41a' }}>
-                                            {items.length > 0 ? items[items.length - 1].value : '-'}
-                                        </Typography.Title>
-                                    </div>
-                                </div>
-                            </Col>
-                        </Row>
-                    </div>
-                </Col>
+            {/* Stats Card */}
+            <Paper elevation={1} sx={{
+                borderRadius: 2,
+                p: 3,
+                mb: 3,
+                textAlign: 'center'
+            }}>
+                <Typography variant="body2" color="text.secondary">
+                    Total
+                </Typography>
+                <Typography variant="h3" fontWeight="bold" sx={{ mt: 1, color: 'primary.main' }}>
+                    {sumItems}
+                </Typography>
+            </Paper>
 
-                {uniqueSortedValues.length > 0 && (
-                    <Col span={24}>
-                        <div className="quick-add-section">
-                            <Typography.Text type="secondary" style={{ marginBottom: '8px', display: 'block' }}>
-                                Quick Add:
-                            </Typography.Text>
-                            <Row justify="center" gutter={[8, 8]}>
-                                {uniqueSortedValues.slice(0, 12).map((value, index) => (
-                                    <Col key={index}>
-                                        <Button
-                                            size="small"
-                                            onClick={() => setInputValue(value.toString())}
-                                            style={{ minWidth: '40px' }}
-                                        >
-                                            {value}
-                                        </Button>
-                                    </Col>
-                                ))}
-                            </Row>
-                        </div>
-                    </Col>
-                )}
-
-                <Col span={24}>
-                    <div className="input-section">
-                        <Row justify="center" align="middle" gutter={[8, 8]}>
-                            <Col xs={24} sm={16}>
-                                <Input
-                                    type="number"
-                                    value={inputValue}
-                                    onChange={(e) => setInputValue(e.target.value)}
-                                    onKeyDown={handleKeyPress}
-                                    placeholder="Enter a score"
-                                    size="large"
-                                    addonAfter={
-                                        <Button type="primary" onClick={addItem} size="middle">
-                                            Add
-                                        </Button>
-                                    }
-                                />
-                            </Col>
-                            <Col xs={24} sm={8}>
-                                <Row justify="center" gutter={[8, 8]}>
-                                    <Col>
-                                        <Popconfirm
-                                            title="Clear all scores?"
-                                            description="This will remove all recorded scores."
-                                            onConfirm={clearItems}
-                                            okText="Yes"
-                                            cancelText="No"
-                                            disabled={items.length === 0}
-                                        >
-                                            <Button
-                                                icon={<ClearOutlined />}
-                                                danger
-                                                disabled={items.length === 0}
-                                            >
-                                                Clear
-                                            </Button>
-                                        </Popconfirm>
-                                    </Col>
-                                </Row>
-                            </Col>
-                        </Row>
-                    </div>
-                </Col>
-
-                <Col span={24}>
-                    <List
-                        className="list-container"
-                        dataSource={[...items].reverse()}
-                        renderItem={(item, index) => (
-                            <List.Item
-                                className="score-item"
-                                onClick={() => setInputValue(item.value.toString())}
-                                style={{ cursor: 'pointer' }}
-                                actions={[
-                                    <Tooltip title={`Added at ${formatTimestamp(item.timestamp)}`}>
-                                        <Typography.Text type="secondary" style={{ fontSize: '12px' }}>
-                                            {formatTimestamp(item.timestamp)}
-                                        </Typography.Text>
-                                    </Tooltip>,
-                                    <Popconfirm
-                                        title="Delete this score?"
-                                        onConfirm={() => removeItem(item.id)}
-                                        okText="Yes"
-                                        cancelText="No"
-                                    >
-                                        <Button
-                                            type="text"
-                                            icon={<DeleteOutlined />}
-                                            danger
-                                            size="small"
-                                            onClick={(e) => e.stopPropagation()}
-                                        />
-                                    </Popconfirm>
-                                ]}
+            {/* Quick Add */}
+            {uniqueSortedValues.length > 0 && (
+                <Paper elevation={1} sx={{ p: 3, mb: 3, borderRadius: 2 }}>
+                    <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1.5 }}>
+                        Quick Add
+                    </Typography>
+                    <Stack
+                        direction="row"
+                        spacing={1}
+                        flexWrap="wrap"
+                        useFlexGap
+                        sx={{ gap: 1 }}
+                    >
+                        {uniqueSortedValues.slice(0, 12).map((value, index) => (
+                            <Button
+                                key={index}
+                                variant="outlined"
+                                size="small"
+                                onClick={() => setInputValue(value.toString())}
+                                sx={{
+                                    minWidth: '45px',
+                                    borderRadius: 2
+                                }}
                             >
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                    <div style={{
-                                        backgroundColor: '#f0f0f0',
-                                        color: '#666',
+                                {value}
+                            </Button>
+                        ))}
+                    </Stack>
+                </Paper>
+            )}
+
+            {/* Input Section */}
+            <Paper elevation={1} sx={{ p: 3, mb: 3, borderRadius: 2 }}>
+                <Stack spacing={2}>
+                    <TextField
+                        type="number"
+                        value={inputValue}
+                        onChange={(e) => setInputValue(e.target.value)}
+                        onKeyDown={handleKeyPress}
+                        placeholder="Enter a score"
+                        fullWidth
+                        size="medium"
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <Button
+                                        variant="contained"
+                                        onClick={addItem}
+                                        size="medium"
+                                        sx={{ minWidth: '80px' }}
+                                    >
+                                        Add
+                                    </Button>
+                                </InputAdornment>
+                            ),
+                            sx: { borderRadius: 2 }
+                        }}
+                    />
+                    <Stack direction="row" spacing={2} justifyContent="center">
+                        {history.length > 0 && (
+                            <Tooltip title={`Undo (${history.length} available)`}>
+                                <Button
+                                    startIcon={<Undo />}
+                                    onClick={undo}
+                                    variant="outlined"
+                                    color="primary"
+                                    sx={{ borderRadius: 2 }}
+                                >
+                                    Undo
+                                </Button>
+                            </Tooltip>
+                        )}
+                        <Button
+                            startIcon={<Clear />}
+                            onClick={() => setConfirmDialogOpen(true)}
+                            color="error"
+                            variant="outlined"
+                            disabled={items.length === 0}
+                            sx={{ borderRadius: 2 }}
+                        >
+                            Clear All
+                        </Button>
+                    </Stack>
+                </Stack>
+            </Paper>
+
+            {/* Score List */}
+            <Paper elevation={0} sx={{
+                borderRadius: 2,
+                overflow: 'hidden',
+                border: '1px solid',
+                borderColor: 'divider',
+                maxHeight: { xs: '100px', sm: '200px' },
+                overflowY: 'auto'
+            }}>
+                {items.length > 0 ? (
+                    <List sx={{ p: 0 }}>
+                        {[...items].reverse().map((item, index) => (
+                            <ListItem
+                                key={item.id}
+                                onClick={() => setInputValue(item.value.toString())}
+                                sx={{
+                                    cursor: 'pointer',
+                                    borderBottom: index === 0 ? 'none' : '1px solid',
+                                    borderColor: 'divider',
+                                    '&:hover': { backgroundColor: 'action.hover' },
+                                    py: 2
+                                }}
+                                secondaryAction={
+                                    <Stack direction="row" spacing={1} alignItems="center">
+                                        <Tooltip title={`Added at ${formatTimestamp(item.timestamp)}`}>
+                                            <Typography
+                                                color="text.secondary"
+                                                sx={{ fontSize: '0.75rem', display: { xs: 'none', sm: 'block' } }}
+                                            >
+                                                {formatTimestamp(item.timestamp)}
+                                            </Typography>
+                                        </Tooltip>
+                                        <Tooltip title="Delete this score?">
+                                            <IconButton
+                                                edge="end"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    removeItem(item.id);
+                                                }}
+                                                size="small"
+                                                color="error"
+                                            >
+                                                <Delete fontSize="small" />
+                                            </IconButton>
+                                        </Tooltip>
+                                    </Stack>
+                                }
+                            >
+                                <Stack direction="row" spacing={2} alignItems="center" sx={{ width: '100%' }}>
+                                    <Box sx={{
+                                        backgroundColor: 'primary.main',
+                                        color: 'primary.contrastText',
                                         borderRadius: '50%',
-                                        width: '28px',
-                                        height: '28px',
+                                        width: '36px',
+                                        height: '36px',
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'center',
-                                        fontSize: '12px',
-                                        fontWeight: 'bold'
+                                        fontSize: '0.875rem',
+                                        fontWeight: 'bold',
+                                        flexShrink: 0
                                     }}>
                                         #{items.length - index}
-                                    </div>
-                                    <Typography.Text strong style={{ fontSize: '18px' }}>
+                                    </Box>
+                                    <Typography variant="h6" sx={{ flexGrow: 1 }}>
                                         {item.value}
-                                    </Typography.Text>
-                                </div>
-                            </List.Item>
-                        )}
-                        locale={{
-                            emptyText: (
-                                <div className="empty-state">
-                                    <Typography.Text type="secondary">
-                                        No scores recorded yet. Add your first score above!
-                                    </Typography.Text>
-                                </div>
-                            )
+                                    </Typography>
+                                    <Typography
+                                        variant="caption"
+                                        color="text.secondary"
+                                        sx={{ display: { xs: 'block', sm: 'none' } }}
+                                    >
+                                        {formatTimestamp(item.timestamp)}
+                                    </Typography>
+                                </Stack>
+                            </ListItem>
+                        ))}
+                    </List>
+                ) : (
+                    <Box sx={{
+                        py: 8,
+                        textAlign: 'center'
+                    }}>
+                        <Typography color="text.secondary">
+                            No scores recorded yet. Add your first score above!
+                        </Typography>
+                    </Box>
+                )}
+            </Paper>
+
+            {/* Clear Confirmation Dialog */}
+            <Dialog
+                open={confirmDialogOpen}
+                onClose={() => setConfirmDialogOpen(false)}
+                maxWidth="xs"
+                fullWidth
+            >
+                <DialogTitle>Clear all scores?</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        This will remove all recorded scores. This action cannot be undone.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setConfirmDialogOpen(false)}>Cancel</Button>
+                    <Button
+                        onClick={() => {
+                            clearItems();
+                            setConfirmDialogOpen(false);
                         }}
-                    />
-                </Col>
-            </Row>
-        </div>
+                        color="error"
+                        variant="contained"
+                    >
+                        Clear All
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            {/* Snackbar */}
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={3000}
+                onClose={() => setSnackbarOpen(false)}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            >
+                <Alert
+                    onClose={() => setSnackbarOpen(false)}
+                    severity="info"
+                    sx={{ width: '100%' }}
+                >
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
+        </Box>
     );
 };
 

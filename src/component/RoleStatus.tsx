@@ -1,6 +1,4 @@
-import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, ColorPicker, Input, Space } from 'antd';
-import type { Color } from 'antd/es/color-picker';
+import { Button, Stack, TextField, Box } from '@mui/material';
 import React, { useState } from 'react';
 import styles from './RoleStatus.module.css';
 
@@ -11,16 +9,14 @@ interface RoleStatusProps {
 }
 
 const RoleStatus: React.FC<RoleStatusProps> = ({ label, defaultColor, defaultValue = 0 }) => {
-    // Load initial value from localStorage if exists
     const storageKey = `RoleStatus.${label}`;
     const initialValue = localStorage.getItem(storageKey)
         ? Number(localStorage.getItem(storageKey))
         : defaultValue;
 
     const [value, setValue] = useState(initialValue);
-    const [color, setColor] = useState<Color>(defaultColor);
+    const [color, setColor] = useState(defaultColor);
 
-    // Save value to localStorage whenever it changes
     React.useEffect(() => {
         localStorage.setItem(storageKey, value.toString());
     }, [value, storageKey]);
@@ -39,43 +35,61 @@ const RoleStatus: React.FC<RoleStatusProps> = ({ label, defaultColor, defaultVal
     };
 
     return (
-        <div className={styles.roleStatus}>
-            <Space size="middle">
-                <span className={styles.label}>{label}</span>
-                <ColorPicker
-                    className={styles.colorPicker}
+        <Box className={styles.roleStatus} sx={{ mb: 2 }}>
+            <Stack direction="row" spacing={2} alignItems="center">
+                <Box className={styles.label}>{label}</Box>
+                <input
+                    type="color"
                     value={color}
-                    onChange={setColor}
-                />
-                <Button
-                    className={styles.controlButton}
-                    icon={<MinusOutlined />}
-                    onClick={handleDecrease}
-                />
-                <Input
-                    className={styles.numberInput}
-                    value={value}
-                    onChange={handleInputChange}
-                    type="number"
+                    onChange={(e) => setColor(e.target.value)}
                     style={{
-                        borderColor: typeof color === 'string' ? color : color.toHexString(),
-                        borderWidth: 2,
-                        textAlign: 'center',
+                        width: '40px',
+                        height: '40px',
+                        border: 'none',
+                        borderRadius: '4px',
+                        cursor: 'pointer'
                     }}
                 />
                 <Button
                     className={styles.controlButton}
-                    icon={<PlusOutlined />}
-                    onClick={handleIncrease}
-                />
-                {/* <Button
-                    className={styles.controlButton}
-                    onClick={() => setValue(0)}
+                    onClick={handleDecrease}
+                    variant="outlined"
+                    size="small"
                 >
-                    <ReloadOutlined />
-                </Button> */}
-            </Space>
-        </div>
+                    -
+                </Button>
+                <TextField
+                    className={styles.numberInput}
+                    value={value}
+                    onChange={handleInputChange}
+                    type="number"
+                    size="small"
+                    sx={{
+                        width: '80px',
+                        '& .MuiOutlinedInput-root': {
+                            '& fieldset': {
+                                borderColor: color,
+                                borderWidth: 2,
+                            },
+                            '&:hover fieldset': {
+                                borderColor: color,
+                            },
+                            '&.Mui-focused fieldset': {
+                                borderColor: color,
+                            },
+                        },
+                    }}
+                />
+                <Button
+                    className={styles.controlButton}
+                    onClick={handleIncrease}
+                    variant="outlined"
+                    size="small"
+                >
+                    +
+                </Button>
+            </Stack>
+        </Box>
     );
 };
 

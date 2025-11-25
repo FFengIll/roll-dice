@@ -1,8 +1,8 @@
-import { Button, Divider, Flex, Input, Space, Typography } from "antd";
+import { Button, Box, TextField, Divider, Typography, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
 
 const RandomNum: React.FC = () => {
-    const [digitCount, setDigitCount] = useState<number>(8); // 默认值设置为 8
+    const [digitCount, setDigitCount] = useState<number>(8);
     const [randomNumbers, setRandomNumbers] = useState<number[]>([]);
 
     const generateRandomNumbers = () => {
@@ -19,21 +19,20 @@ const RandomNum: React.FC = () => {
         }
     };
 
-    // 在组件挂载时生成默认的 8 位随机数
     useEffect(() => {
         generateRandomNumbers();
     }, []);
 
     return (
-        <div style={{ padding: "24px", alignItems: "center", }}>
-            <Typography.Title level={3} style={{ marginBottom: "16px" }}>
+        <Box sx={{ padding: "24px", display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <Typography variant="h5" sx={{ mb: 2 }}>
                 Random Number Generator
-            </Typography.Title>
-            <Flex wrap gap="small">
+            </Typography>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 3 }}>
                 {randomNumbers.map((num, index) => (
-                    <div
+                    <Box
                         key={index}
-                        style={{
+                        sx={{
                             width: "50px",
                             height: "50px",
                             display: "flex",
@@ -43,29 +42,30 @@ const RandomNum: React.FC = () => {
                             borderRadius: "4px",
                         }}
                     >
-                        <Typography.Text strong>{num}</Typography.Text>
-                    </div>
+                        <Typography variant="h6">{num}</Typography>
+                    </Box>
                 ))}
-            </Flex>
-            <Divider></Divider>
-            <Space direction="horizontal" size="small" >
-                <Input
+            </Box>
+            <Divider sx={{ width: '100%', mb: 2 }}></Divider>
+            <Stack direction="row" spacing={1} sx={{ mb: 3 }}>
+                <TextField
                     type="number"
                     value={digitCount}
                     onChange={(e) => handleDigitCountChange(e as React.ChangeEvent<HTMLInputElement>)}
-                    style={{ marginRight: "8px", width: "200px" }}
+                    sx={{ mr: 1, width: "200px" }}
                     placeholder="Number of Digits"
+                    size="small"
                 />
-                <Button onClick={() => setDigitCount((prev) => prev + 1)}>+</Button>
-                <Button onClick={() => setDigitCount((prev) => Math.max(1, prev - 1))}>-</Button>
-            </Space>
-            <Divider></Divider>
-            <Space direction="horizontal" size="large" >
-                <Button type="primary" onClick={generateRandomNumbers}>
+                <Button onClick={() => setDigitCount((prev) => prev + 1)} variant="outlined">+</Button>
+                <Button onClick={() => setDigitCount((prev) => Math.max(1, prev - 1))} variant="outlined">-</Button>
+            </Stack>
+            <Divider sx={{ width: '100%', mb: 3 }}></Divider>
+            <Stack direction="row" spacing={2}>
+                <Button variant="contained" onClick={generateRandomNumbers}>
                     Generate
                 </Button>
                 <Button
-                    type="primary"
+                    variant="contained"
                     onClick={() => {
                         const numberString = randomNumbers.join('');
                         navigator.clipboard.writeText(numberString).then(() => {
@@ -75,8 +75,8 @@ const RandomNum: React.FC = () => {
                 >
                     Copy
                 </Button>
-            </Space>
-        </div>
+            </Stack>
+        </Box>
     );
 };
 

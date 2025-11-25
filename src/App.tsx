@@ -1,6 +1,6 @@
 import { faHome, faRefresh } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Card, Flex, FloatButton, Typography } from "antd";
+import { Box, Card, CardActionArea, CardContent, Typography } from "@mui/material";
 import React, { useState } from 'react';
 
 import './App.css';
@@ -16,14 +16,16 @@ import { initAnalytics } from './analytics';
 
 const RoleStatusPanel: React.FC = () => {
     return (
-        <div style={{ padding: '24px' }}>
-            <Card title="角色状态" style={{ width: 400 }}>
-                <RoleStatus label="HP" defaultColor="#ff4d4f" />
-                <RoleStatus label="MP" defaultColor="#1677ff" />
-                <RoleStatus label="Money" defaultColor="#faad14" />
-                <RoleStatus label="Exp" defaultColor="#52c41a" />
+        <Box sx={{ padding: '24px' }}>
+            <Card title="角色状态" sx={{ width: 400 }}>
+                <CardContent>
+                    <RoleStatus label="HP" defaultColor="#ff4d4f" />
+                    <RoleStatus label="MP" defaultColor="#1677ff" />
+                    <RoleStatus label="Money" defaultColor="#faad14" />
+                    <RoleStatus label="Exp" defaultColor="#52c41a" />
+                </CardContent>
             </Card>
-        </div>
+        </Box>
     );
 };
 
@@ -47,24 +49,34 @@ function App() {
 
     const homeButton = () => {
         return (
-            <FloatButton
+            <Box
                 onClick={() => setActiveView(null)}
-                // className="controll-button"
-                type="primary"
-                style={{
+                sx={{
+                    position: 'fixed',
+                    bottom: 96,
+                    right: 24,
                     width: '48px',
                     height: '48px',
-                    insetInlineEnd: 96
+                    bgcolor: 'primary.main',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer',
+                    zIndex: 1000,
+                    '&:hover': {
+                        bgcolor: 'primary.dark',
+                    }
                 }}
-                icon={<FontAwesomeIcon icon={faHome} />}
             >
-            </FloatButton>
+                <FontAwesomeIcon icon={faHome} color="white" />
+            </Box>
         )
     }
 
     const resetButton = () => {
         return (
-            <FloatButton
+            <Box
                 onClick={() => {
                     // Remove all localStorage items with specific prefixes
                     // Object.keys(localStorage).forEach(key => {
@@ -75,16 +87,26 @@ function App() {
                     // });
                     // setActiveView(activeView)
                 }}
-                type="primary"
-                // className="controll-button"
-                style={{
+                sx={{
+                    position: 'fixed',
+                    bottom: 24,
+                    right: 24,
                     width: '48px',
                     height: '48px',
-                    insetInlineEnd: 24
+                    bgcolor: 'primary.main',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer',
+                    zIndex: 1000,
+                    '&:hover': {
+                        bgcolor: 'primary.dark',
+                    }
                 }}
-                icon={<FontAwesomeIcon icon={faRefresh} />}
             >
-            </FloatButton>
+                <FontAwesomeIcon icon={faRefresh} color="white" />
+            </Box>
         )
     }
 
@@ -98,7 +120,6 @@ function App() {
     if (activeView) {
         return (
             <div>
-
                 {homeButton()}
                 {resetButton()}
                 {views.get(activeView)}
@@ -106,31 +127,38 @@ function App() {
         );
     }
 
-
-
     return (
         <>
             <GS4></GS4>
             {homeButton()}
             {resetButton()}
 
-
-            <Flex wrap gap="small">
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: 2,
+                    justifyContent: 'center',
+                    padding: 2
+                }}
+            >
                 {
                     Array.from(views.keys()).map((name) => (
                         <Card
-                            title={
-                                <Typography.Title level={3}>
-                                    {name}
-                                </Typography.Title>
-                            }
-                            onClick={() => setActiveView(name)}
-                            style={{ cursor: 'pointer', width: '250px', textAlign: 'center' }}
+                            key={name}
+                            sx={{ width: '250px', textAlign: 'center' }}
                         >
-                        </Card >
+                            <CardActionArea onClick={() => setActiveView(name)}>
+                                <CardContent>
+                                    <Typography variant="h6" component="h3">
+                                        {name}
+                                    </Typography>
+                                </CardContent>
+                            </CardActionArea>
+                        </Card>
                     ))
                 }
-            </Flex >
+            </Box>
         </>
     );
 }
