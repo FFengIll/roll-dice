@@ -136,27 +136,68 @@ function App() {
             <Box
                 sx={{
                     display: 'flex',
-                    flexWrap: 'wrap',
-                    gap: 2,
+                    flexDirection: 'column',
+                    gap: 3,
                     justifyContent: 'center',
-                    padding: 2
+                    padding: 2,
+                    maxWidth: '600px',
+                    margin: '0 auto'
                 }}
             >
                 {
-                    Array.from(views.keys()).map((name) => (
-                        <Card
-                            key={name}
-                            sx={{ width: '250px', textAlign: 'center' }}
-                        >
-                            <CardActionArea onClick={() => setActiveView(name)}>
-                                <CardContent>
-                                    <Typography variant="h6" component="h3">
-                                        {name}
-                                    </Typography>
-                                </CardContent>
-                            </CardActionArea>
-                        </Card>
-                    ))
+                    Array.from(views.keys()).map((name, index) => {
+                        const indicatorColors = [
+                            '#1890ff', // Roll Dice - Blue
+                            '#52c41a', // Score Record - Green
+                            '#faad14', // Number Gen - Orange
+                            '#722ed1'  // Role Status - Purple
+                        ];
+                        return (
+                            <Card
+                                key={name}
+                                sx={{
+                                    width: '100%',
+                                    height: '100px',
+                                    position: 'relative',
+                                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                                    borderRadius: '8px',
+                                    transition: 'all 0.3s ease',
+                                    border: '1px solid #f0f0f0',
+                                    '&:hover': {
+                                        transform: 'translateY(-2px)',
+                                        boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
+                                    }
+                                }}
+                            >
+                                <CardActionArea onClick={() => setActiveView(name)} sx={{ height: '100%' }}>
+                                    <Box
+                                        sx={{
+                                            position: 'absolute',
+                                            left: 0,
+                                            top: 0,
+                                            bottom: 0,
+                                            width: '6px',
+                                            backgroundColor: indicatorColors[index],
+                                            borderRadius: '8px 0 0 8px'
+                                        }}
+                                    />
+                                    <CardContent sx={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        height: '100%',
+                                        paddingLeft: 4,
+                                        paddingRight: 2,
+                                        '&:last-child': { paddingBottom: 2 }
+                                    }}>
+                                        <Typography variant="h5" component="h3" sx={{ fontWeight: 500 }}>
+                                            {name}
+                                        </Typography>
+                                    </CardContent>
+                                </CardActionArea>
+                            </Card>
+                        );
+                    })
                 }
             </Box>
         </>
