@@ -133,12 +133,14 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
     cursor: pointer;
+    position: relative;
 }
 
 .dice.dice6 {
     background-color: #ffffff;
     border: 2px solid #000000;
     color: #000000;
+    position: relative;
 }
 
 #dice-red {
@@ -223,6 +225,14 @@ button {
     background-color: #ffffff;
     border: 2px solid #000000;
     color: #000000;
+    position: relative;
+}
+
+/* Keep dice-label still during shake animation */
+.dice.shaking .dice-label,
+.dice.shaking6 .dice-label {
+    animation: none !important;
+    transform: none !important;
 }
 
 @keyframes shake {
@@ -542,6 +552,27 @@ button {
     }
 }
 
+/* Dice label styles */
+.dice-label {
+    position: absolute;
+    bottom: -40px;
+    /* right: 0; */
+    font-size: 10px;
+    color: #999;
+    font-weight: 600;
+    font-family: Arial, sans-serif;
+    pointer-events: none;
+    user-select: none;
+    white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+    .dice-label {
+        font-size: 8px;
+        bottom: -40px;
+    }
+}
+
 /* Large screen optimizations */
 @media (min-width: 1024px) {
     .dice-container {
@@ -551,5 +582,10 @@ button {
     .control-btn {
         font-size: 20px;
         padding: 8px 12px;
+    }
+
+    .dice-label {
+        font-size: 12px;
+        bottom: -40px;
     }
 }
