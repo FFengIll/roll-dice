@@ -12,6 +12,8 @@ tasks:
     silent: true
 
   debug:
+    aliases:
+      - dev
     desc: Run the application in debug mode
     cmds:
       - pnpm dev
