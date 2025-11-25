@@ -9,6 +9,11 @@ import RoleStatus from './component/RoleStatus';
 import RollDice from './component/RollDice';
 import ScoreRecorder from './component/ScoreRecorder';
 
+import { useEffect } from 'react';
+import ReactGA from "react-ga4";
+import { useLocation } from 'react-router-dom';
+import { initAnalytics } from './analytics';
+
 const RoleStatusPanel: React.FC = () => {
     return (
         <div style={{ padding: '24px' }}>
@@ -21,6 +26,20 @@ const RoleStatusPanel: React.FC = () => {
         </div>
     );
 };
+
+function GS4() {
+    const location = useLocation();
+
+    useEffect(() => {
+        initAnalytics();
+    }, []);
+
+    useEffect(() => {
+        ReactGA.send({ hitType: "pageview", page: location.pathname });
+    }, [location]);
+
+    return (<div></div>)
+}
 
 
 function App() {
@@ -87,9 +106,11 @@ function App() {
         );
     }
 
+
+
     return (
         <>
-
+            <GS4></GS4>
             {homeButton()}
             {resetButton()}
 
