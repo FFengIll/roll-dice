@@ -17,6 +17,8 @@ tasks:
       - pnpm dev
 
   release:
+    aliases:
+      - dist
     desc: Build and package the application for release
     cmds:
       - pnpm release
